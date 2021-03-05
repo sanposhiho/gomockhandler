@@ -31,11 +31,11 @@ TBD
 
 ## Project status
 
-[ ] can generate mocks with the same options as mockgen.
-  [x] [Source mode](https://github.com/golang/mock#source-mode)
-  [ ] [Reflect mode](https://github.com/golang/mock#reflect-mode)
-[ ] can check if mock is up to date.
-  [x] check by comparing.
-  [ ] check by checking `gomockhandler.json`(in order to detect deletion of the original interface).
-[ ] can manage all mocks in one config file. 
-  [ ] create mocks from the config file.
+- [ ] can generate mocks with the same options as mockgen.
+  - [x] [Source mode](https://github.com/golang/mock#source-mode)
+  - [ ] [Reflect mode](https://github.com/golang/mock#reflect-mode)
+- [ ] can check if mock is up to date.
+  - [x] check by comparing.
+  - [ ] check by checking `gomockhandler.json`(in order to detect deletion of the original interface).
+- [ ] can manage all mocks in one config file. 
+  - [ ] create mocks from the config file.
