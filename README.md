@@ -6,6 +6,14 @@ gomockhandler is a simple wrapper of [mockgen](https://github.com/golang/mock).
 - You can check if mock is up to date.
 - [optional] You can manage your mocks in one config file.
 
+## Install
+
+Note: You have to install `mockgen` first.
+
+**TBD**
+
+## How to use
+
 ### Generate mock
 
 You can use the same options as mockgen to generate mocks.
@@ -27,7 +35,7 @@ gomockhandler -check true -source=foo.go [other options]
 
 ### [optional] manage all mocks on one config
 
-TBD
+**TBD**
 
 ## Project status
 
