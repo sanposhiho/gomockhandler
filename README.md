@@ -1,12 +1,12 @@
 # gomockhandler
 
-gomockhandler is simple wrapper of [mockgen](https://github.com/golang/mock) .
+gomockhandler is a simple wrapper of [mockgen](https://github.com/golang/mock).
 
 - You can use the same options as mockgen to generate mocks.
 - You can check if mock is up to date.
 - [optional] You can manage your mocks in one config file.
 
-### Create mock
+### Generate mock
 
 You can use the same options as mockgen to generate mocks.
 
