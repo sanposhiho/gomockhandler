@@ -33,6 +33,12 @@ You can check if mock is up to date with `-check true` flag.
 gomockhandler -check true -source=foo.go [other options]
 ```
 
+You can see the error if the mock is not up to date.
+
+```
+2021/03/06 02:37:16 mock is not up to date. source: user.go, destination: ../mock/user.go
+```
+
 ### [optional] manage all mocks on one config
 
 **TBD**
