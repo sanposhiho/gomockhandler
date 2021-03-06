@@ -7,4 +7,5 @@ genjson:
 playground:
 	go build . ;\
 	cd playground ;\
-	go generate ./...
+	go generate ./...; \
+	rm ../gomockhandler
