@@ -45,9 +45,9 @@ You can see the error if the mock is not up to date.
 
 ## Project status
 
-- [ ] can generate mocks with the same options as mockgen.
+- [x] can generate mocks with the same options as mockgen.
   - [x] [Source mode](https://github.com/golang/mock#source-mode)
-  - [ ] [Reflect mode](https://github.com/golang/mock#reflect-mode)
+  - [x] [Reflect mode](https://github.com/golang/mock#reflect-mode)
 - [ ] can check if mock is up to date.
   - [x] check by comparing.
   - [ ] check by checking `gomockhandler.json`(in order to detect deletion of the original interface).
