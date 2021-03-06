@@ -10,31 +10,31 @@ import (
 	gomock "github.com/golang/mock/gomock"
 )
 
-// Mockuser is a mock of user interface.
-type Mockuser struct {
+// MockUser is a mock of User interface.
+type MockUser struct {
 	ctrl     *gomock.Controller
-	recorder *MockuserMockRecorder
+	recorder *MockUserMockRecorder
 }
 
-// MockuserMockRecorder is the mock recorder for Mockuser.
-type MockuserMockRecorder struct {
-	mock *Mockuser
+// MockUserMockRecorder is the mock recorder for MockUser.
+type MockUserMockRecorder struct {
+	mock *MockUser
 }
 
-// NewMockuser creates a new mock instance.
-func NewMockuser(ctrl *gomock.Controller) *Mockuser {
-	mock := &Mockuser{ctrl: ctrl}
-	mock.recorder = &MockuserMockRecorder{mock}
+// NewMockUser creates a new mock instance.
+func NewMockUser(ctrl *gomock.Controller) *MockUser {
+	mock := &MockUser{ctrl: ctrl}
+	mock.recorder = &MockUserMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *Mockuser) EXPECT() *MockuserMockRecorder {
+func (m *MockUser) EXPECT() *MockUserMockRecorder {
 	return m.recorder
 }
 
 // String mocks base method.
-func (m *Mockuser) String() string {
+func (m *MockUser) String() string {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "String")
 	ret0, _ := ret[0].(string)
@@ -42,13 +42,13 @@ func (m *Mockuser) String() string {
 }
 
 // String indicates an expected call of String.
-func (mr *MockuserMockRecorder) String() *gomock.Call {
+func (mr *MockUserMockRecorder) String() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "String", reflect.TypeOf((*Mockuser)(nil).String))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "String", reflect.TypeOf((*MockUser)(nil).String))
 }
 
 // String2 mocks base method.
-func (m *Mockuser) String2() string {
+func (m *MockUser) String2() string {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "String2")
 	ret0, _ := ret[0].(string)
@@ -56,7 +56,7 @@ func (m *Mockuser) String2() string {
 }
 
 // String2 indicates an expected call of String2.
-func (mr *MockuserMockRecorder) String2() *gomock.Call {
+func (mr *MockUserMockRecorder) String2() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "String2", reflect.TypeOf((*Mockuser)(nil).String2))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "String2", reflect.TypeOf((*MockUser)(nil).String2))
 }

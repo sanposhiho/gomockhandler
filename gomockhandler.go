@@ -7,9 +7,12 @@ import (
 	"log"
 	"os"
 
+	"github.com/sanposhiho/gomockhandler/mockgen/reflectmode"
+
+	"github.com/sanposhiho/gomockhandler/mockgen/sourcemode"
+
 	mockrepo "github.com/sanposhiho/gomockhandler/repository/chunk"
 
-	"github.com/sanposhiho/gomockhandler/mockgen"
 	"github.com/sanposhiho/gomockhandler/model"
 )
 
@@ -32,16 +35,50 @@ var (
 	debugParser     = flag.Bool("debug_parser", false, "Print out parser results only.")
 )
 
+type chunkRepo interface {
+	Put(m *model.Chunk) error
+	Get() (*model.Chunk, error)
+}
+
+type mockgenRunner interface {
+	Run() error
+}
+
+type realmain struct {
+	chunkRepo     chunkRepo
+	mockgenRunner mockgenRunner
+}
+
 func main() {
 	flag.Parse()
-	r := mockgen.NewRunner(*source, *destination, *packageOut, *imports, *auxFiles, *buildFlags, *mockNames, *selfPackage, *copyrightFile, *execOnly, *progOnly, *writePkgComment, *debugParser)
-	if err := r.Run(); err != nil {
+
+	repo := mockrepo.NewRepository()
+	rm := realmain{
+		chunkRepo: &repo,
+	}
+	if *source == "" {
+		if flag.NArg() != 2 {
+			log.Fatal("Expected exactly two arguments")
+		}
+		packageName := flag.Arg(0)
+		interfaces := flag.Arg(1)
+		r := reflectmode.NewRunner(packageName, interfaces, *source, *destination, *packageOut, *imports, *auxFiles, *buildFlags, *mockNames, *selfPackage, *copyrightFile, *execOnly, *progOnly, *writePkgComment, *debugParser)
+		rm.mockgenRunner = r
+	} else {
+		r := sourcemode.NewRunner(*source, *destination, *packageOut, *imports, *auxFiles, *mockNames, *selfPackage, *copyrightFile, *writePkgComment, *debugParser)
+		rm.mockgenRunner = r
+	}
+
+	rm.run()
+}
+
+func (r realmain) run() {
+	if err := r.mockgenRunner.Run(); err != nil {
 		log.Fatalf("failed to run mockgen: %v", err)
 	}
 
-	repo := mockrepo.NewRepository()
 	if *destination != "" {
-		chunk, err := repo.Get()
+		chunk, err := r.chunkRepo.Get()
 		if err != nil {
 			if !os.IsNotExist(err) {
 				log.Fatalf("failed to get chunk: %v", err)
@@ -67,7 +104,7 @@ func main() {
 		} else {
 			mock := model.NewMock(*source, *destination, checksum)
 			chunk.PutMock(mock)
-			if err := repo.Put(chunk); err != nil {
+			if err := r.chunkRepo.Put(chunk); err != nil {
 				log.Fatalf("failed to put chunk: %v", err)
 			}
 		}
