@@ -1,8 +1,8 @@
 package interfaces
 
-//go:generate ../gomockhandler -source=$GOFILE -destination=../mock/$GOFILE
+//go:generate ../../gomockhandler -source=$GOFILE -destination=../mock/$GOFILE
 
-type user interface {
+type User interface {
 	String() string
 	String2() string
 }
