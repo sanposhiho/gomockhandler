@@ -4,16 +4,14 @@ import (
 	"crypto/md5"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 
 	"github.com/sanposhiho/gomockhandler/mockgen/reflectmode"
-
 	"github.com/sanposhiho/gomockhandler/mockgen/sourcemode"
-
-	mockrepo "github.com/sanposhiho/gomockhandler/repository/chunk"
-
 	"github.com/sanposhiho/gomockhandler/model"
+	mockrepo "github.com/sanposhiho/gomockhandler/repository/chunk"
 )
 
 var (
@@ -113,7 +111,7 @@ func (r realmain) run() {
 }
 
 func mockChackSum(filePath string) ([16]byte, error) {
-	file, err := os.ReadFile(filePath)
+	file, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return [16]byte{}, fmt.Errorf("failed read file. filename: %s, err: %w", filePath)
 	}
