@@ -32,7 +32,7 @@ func (r *Repository) Get() (*model.Chunk, error) {
 		return nil, err
 	}
 
-	raw, err := os.ReadFile(filename)
+	raw, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, fmt.Errorf("read file: %w", err)
 	}
