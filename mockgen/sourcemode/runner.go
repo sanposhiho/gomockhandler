@@ -64,7 +64,7 @@ func (r *Runner) options() []string {
 		opts = append(opts, "-copyright_file="+r.CopyrightFile)
 	}
 	opts = append(opts, "-write_package_comment="+strconv.FormatBool(r.WritePkgComment))
-	opts = append(opts, "-debug_parser="+strconv.FormatBool(r.WritePkgComment))
+	opts = append(opts, "-debug_parser="+strconv.FormatBool(r.DebugParser))
 
 	return opts
 }

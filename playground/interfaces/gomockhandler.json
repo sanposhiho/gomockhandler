@@ -1,1 +1,1 @@
-{"mocks":{"../mock/user.go":{"source":"user.go","destination":"../mock/user.go","checksum":"X5wJNv0Eejbk78ClmAhCug=="},"../mock/user2.go":{"source":"","destination":"../mock/user2.go","checksum":"9k3HjVw4BDYYsSn8irCPCA=="}}}
+{"mocks":{"../mock/user.go":{"source":"user.go","destination":"../mock/user.go","checksum":"X5wJNv0Eejbk78ClmAhCug=="},"../mock/user2.go":{"source":"","destination":"../mock/user2.go","checksum":"zBTdwg2l3qrUq1/VXJRezg=="}}}

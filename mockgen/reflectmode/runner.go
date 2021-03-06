@@ -82,7 +82,7 @@ func (r *Runner) options() []string {
 	}
 	opts = append(opts, "-prog_only="+strconv.FormatBool(r.ProgOnly))
 	opts = append(opts, "-write_package_comment="+strconv.FormatBool(r.WritePkgComment))
-	opts = append(opts, "-debug_parser="+strconv.FormatBool(r.WritePkgComment))
+	opts = append(opts, "-debug_parser="+strconv.FormatBool(r.DebugParser))
 
 	return opts
 }
