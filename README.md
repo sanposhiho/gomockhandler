@@ -8,9 +8,18 @@
 
 ## Install
 
-Note: You have to install `mockgen` first.
+You have to install `mockgen` first.
 
-**TBD**
+### Go version < 1.16
+```
+GO111MODULE=on go get github.com/golang/mock/mockgen
+GO111MODULE=on go get github.com/sanposhiho/gomockhandler
+```
+### Go 1.16+
+```
+go install github.com/golang/mock/mockgen
+go install github.com/sanposhiho/gomockhandler
+```
 
 ## How to use
 
