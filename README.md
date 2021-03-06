@@ -18,19 +18,32 @@ Note: You have to install `mockgen` first.
 
 You can use the same options as mockgen to generate mocks.
 
-Example:
+`mockgen` has two modes of operation: source and reflect, and, gomockhandler support both.
+
+Example(Source mode):
 ```
 gomockhandler -source=foo.go [other options]
+```
+
+Example(Reflect mode):
+```
+gomockhandler [options] database/sql/driver Conn,Driver
 ```
 
 See [golang/mock#running-mockgen](https://github.com/golang/mock#running-mockgen) for more information.
 
 ### Check if mock is up-to-date
 
-You can check if mock is up to date with `-check true` flag.
+You can check if mock is up to date with `-check=true` flag.
 
+Example(Source mode):
 ```
-gomockhandler -check true -source=foo.go [other options]
+gomockhandler -source=foo.go -check=true [other options]
+```
+
+Example(Reflect mode):
+```
+gomockhandler -check=true [options] database/sql/driver Conn,Driver
 ```
 
 You can see the error if the mock is not up to date.
