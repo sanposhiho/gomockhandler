@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 
@@ -44,7 +45,7 @@ type mockgenRunner interface {
 	Run() error
 }
 
-type realmain struct {
+type Realmain struct {
 	chunkRepo     chunkRepo
 	mockgenRunner mockgenRunner
 }
@@ -53,26 +54,89 @@ func main() {
 	flag.Parse()
 
 	repo := mockrepo.NewRepository()
-	rm := realmain{
+	rm := Realmain{
 		chunkRepo: &repo,
 	}
-	if *source == "" {
-		if flag.NArg() != 2 {
-			log.Fatal("Expected exactly two arguments")
+
+	var realmain func()
+	if *check {
+		if *destination == "" {
+			log.Fatal("Need destination to check if the mock is up-to-date.")
 		}
-		packageName := flag.Arg(0)
-		interfaces := flag.Arg(1)
-		r := reflectmode.NewRunner(packageName, interfaces, *source, *destination, *packageOut, *imports, *auxFiles, *buildFlags, *mockNames, *selfPackage, *copyrightFile, *execOnly, *progOnly, *writePkgComment, *debugParser)
-		rm.mockgenRunner = r
+
+		d, err := ioutil.TempDir(".", "")
+		if err != nil {
+			log.Fatalf("Failed to create temp file: %v", err)
+		}
+		defer os.RemoveAll(d)
+		tmpFile := d + "/tmpmock.go"
+
+		if *source == "" {
+			if flag.NArg() != 2 {
+				log.Fatal("Expected exactly two arguments")
+			}
+			packageName := flag.Arg(0)
+			interfaces := flag.Arg(1)
+			r := reflectmode.NewRunner(packageName, interfaces, *source, tmpFile, *packageOut, *imports, *auxFiles, *buildFlags, *mockNames, *selfPackage, *copyrightFile, *execOnly, *progOnly, *writePkgComment, *debugParser)
+			rm.mockgenRunner = r
+		} else {
+			r := sourcemode.NewRunner(*source, tmpFile, *packageOut, *imports, *auxFiles, *mockNames, *selfPackage, *copyrightFile, *writePkgComment, *debugParser)
+			rm.mockgenRunner = r
+		}
+
+		realmain = func() {
+			rm.check(tmpFile)
+		}
 	} else {
-		r := sourcemode.NewRunner(*source, *destination, *packageOut, *imports, *auxFiles, *mockNames, *selfPackage, *copyrightFile, *writePkgComment, *debugParser)
-		rm.mockgenRunner = r
+		if *source == "" {
+			if flag.NArg() != 2 {
+				log.Fatal("Expected exactly two arguments")
+			}
+			packageName := flag.Arg(0)
+			interfaces := flag.Arg(1)
+			r := reflectmode.NewRunner(packageName, interfaces, *source, *destination, *packageOut, *imports, *auxFiles, *buildFlags, *mockNames, *selfPackage, *copyrightFile, *execOnly, *progOnly, *writePkgComment, *debugParser)
+			rm.mockgenRunner = r
+		} else {
+			r := sourcemode.NewRunner(*source, *destination, *packageOut, *imports, *auxFiles, *mockNames, *selfPackage, *copyrightFile, *writePkgComment, *debugParser)
+			rm.mockgenRunner = r
+		}
+
+		realmain = rm.generate
 	}
 
-	rm.run()
+	realmain()
 }
 
-func (r realmain) run() {
+func (r Realmain) check(tmpDir string) {
+	if err := r.mockgenRunner.Run(); err != nil {
+		log.Fatalf("failed to run mockgen: %v", err)
+	}
+
+	chunk, err := r.chunkRepo.Get()
+	if err != nil {
+		if !os.IsNotExist(err) {
+			log.Fatalf("failed to get chunk: %v", err)
+		}
+		chunk = model.NewChunk()
+	}
+
+	checksum, err := mockChackSum(tmpDir)
+	if err != nil {
+		log.Fatalf("failed to calculate checksum of the mock: %v", err)
+	}
+
+	m, err := chunk.Find(*destination)
+	if err != nil {
+		log.Fatalf("failed to get chunk: %v", err)
+	}
+
+	if m.CheckSum != checksum {
+		// mock is not up to date
+		log.Printf("[WARN] mock is not up to date. source: %s, destination: %s", *source, *destination)
+	}
+}
+
+func (r Realmain) generate() {
 	if err := r.mockgenRunner.Run(); err != nil {
 		log.Fatalf("failed to run mockgen: %v", err)
 	}
@@ -91,22 +155,10 @@ func (r realmain) run() {
 			log.Fatalf("failed to calculate checksum of the mock: %v", err)
 		}
 
-		if *check {
-			m, err := chunk.Find(*destination)
-			if err != nil {
-				log.Fatalf("failed to get chunk: %v", err)
-			}
-
-			if m.CheckSum != checksum {
-				// mock is not up to date
-				log.Fatalf("mock is not up to date. source: %s, destination: %s", *source, *destination)
-			}
-		} else {
-			mock := model.NewMock(*source, *destination, checksum)
-			chunk.PutMock(mock)
-			if err := r.chunkRepo.Put(chunk); err != nil {
-				log.Fatalf("failed to put chunk: %v", err)
-			}
+		mock := model.NewMock(*source, *destination, checksum)
+		chunk.PutMock(mock)
+		if err := r.chunkRepo.Put(chunk); err != nil {
+			log.Fatalf("failed to put chunk: %v", err)
 		}
 	}
 	return
