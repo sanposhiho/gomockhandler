@@ -1,16 +1,15 @@
 package main
 
 import (
-	"crypto/md5"
 	"flag"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 
+	"github.com/sanposhiho/gomockhandler/realmain"
+
 	"github.com/sanposhiho/gomockhandler/mockgen/reflectmode"
 	"github.com/sanposhiho/gomockhandler/mockgen/sourcemode"
-	"github.com/sanposhiho/gomockhandler/model"
 	mockrepo "github.com/sanposhiho/gomockhandler/repository/chunk"
 )
 
@@ -33,26 +32,27 @@ var (
 	debugParser     = flag.Bool("debug_parser", false, "Print out parser results only.")
 )
 
-type chunkRepo interface {
-	Put(m *model.Chunk) error
-	Get() (*model.Chunk, error)
-}
-
-type mockgenRunner interface {
-	Run() error
-}
-
-type Realmain struct {
-	chunkRepo     chunkRepo
-	mockgenRunner mockgenRunner
-}
-
 func main() {
 	flag.Parse()
 
 	repo := mockrepo.NewRepository()
-	rm := Realmain{
-		chunkRepo: &repo,
+	rm := realmain.Runner{
+		ChunkRepo: &repo,
+		Args: realmain.Args{
+			Source:          *source,
+			Destination:     *destination,
+			MockNames:       *packageOut,
+			PackageOut:      *packageOut,
+			SelfPackage:     *selfPackage,
+			WritePkgComment: *writePkgComment,
+			CopyrightFile:   *copyrightFile,
+			Imports:         *imports,
+			AuxFiles:        *auxFiles,
+			ExecOnly:        *execOnly,
+			BuildFlags:      *buildFlags,
+			ProgOnly:        *progOnly,
+			DebugParser:     *debugParser,
+		},
 	}
 
 	var realmain func()
@@ -75,14 +75,14 @@ func main() {
 			packageName := flag.Arg(0)
 			interfaces := flag.Arg(1)
 			r := reflectmode.NewRunner(packageName, interfaces, *source, tmpFile, *packageOut, *imports, *auxFiles, *buildFlags, *mockNames, *selfPackage, *copyrightFile, *execOnly, *progOnly, *writePkgComment, *debugParser)
-			rm.mockgenRunner = r
+			rm.MockgenRunner = r
 		} else {
 			r := sourcemode.NewRunner(*source, tmpFile, *packageOut, *imports, *auxFiles, *mockNames, *selfPackage, *copyrightFile, *writePkgComment, *debugParser)
-			rm.mockgenRunner = r
+			rm.MockgenRunner = r
 		}
 
 		realmain = func() {
-			rm.check(tmpFile)
+			rm.Check(tmpFile)
 		}
 	} else {
 		if *source == "" {
@@ -92,81 +92,14 @@ func main() {
 			packageName := flag.Arg(0)
 			interfaces := flag.Arg(1)
 			r := reflectmode.NewRunner(packageName, interfaces, *source, *destination, *packageOut, *imports, *auxFiles, *buildFlags, *mockNames, *selfPackage, *copyrightFile, *execOnly, *progOnly, *writePkgComment, *debugParser)
-			rm.mockgenRunner = r
+			rm.MockgenRunner = r
 		} else {
 			r := sourcemode.NewRunner(*source, *destination, *packageOut, *imports, *auxFiles, *mockNames, *selfPackage, *copyrightFile, *writePkgComment, *debugParser)
-			rm.mockgenRunner = r
+			rm.MockgenRunner = r
 		}
 
-		realmain = rm.generate
+		realmain = rm.Generate
 	}
 
 	realmain()
-}
-
-func (r Realmain) check(tmpDir string) {
-	if err := r.mockgenRunner.Run(); err != nil {
-		log.Fatalf("failed to run mockgen: %v", err)
-	}
-
-	chunk, err := r.chunkRepo.Get()
-	if err != nil {
-		if !os.IsNotExist(err) {
-			log.Fatalf("failed to get chunk: %v", err)
-		}
-		chunk = model.NewChunk()
-	}
-
-	checksum, err := mockChackSum(tmpDir)
-	if err != nil {
-		log.Fatalf("failed to calculate checksum of the mock: %v", err)
-	}
-
-	m, err := chunk.Find(*destination)
-	if err != nil {
-		log.Fatalf("failed to get chunk: %v", err)
-	}
-
-	if m.CheckSum != checksum {
-		// mock is not up to date
-		log.Printf("[WARN] mock is not up to date. source: %s, destination: %s", *source, *destination)
-	}
-}
-
-func (r Realmain) generate() {
-	if err := r.mockgenRunner.Run(); err != nil {
-		log.Fatalf("failed to run mockgen: %v", err)
-	}
-
-	if *destination != "" {
-		chunk, err := r.chunkRepo.Get()
-		if err != nil {
-			if !os.IsNotExist(err) {
-				log.Fatalf("failed to get chunk: %v", err)
-			}
-			chunk = model.NewChunk()
-		}
-
-		checksum, err := mockChackSum(*destination)
-		if err != nil {
-			log.Fatalf("failed to calculate checksum of the mock: %v", err)
-		}
-
-		mock := model.NewMock(*source, *destination, checksum)
-		chunk.PutMock(mock)
-		if err := r.chunkRepo.Put(chunk); err != nil {
-			log.Fatalf("failed to put chunk: %v", err)
-		}
-	}
-	return
-}
-
-func mockChackSum(filePath string) ([16]byte, error) {
-	file, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		return [16]byte{}, fmt.Errorf("failed read file. filename: %s, err: %w", filePath)
-	}
-
-	hash := md5.Sum(file)
-	return hash, nil
 }
