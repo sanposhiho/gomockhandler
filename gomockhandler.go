@@ -24,6 +24,7 @@ import (
 var (
 	projectRoot = flag.String("project_root", "", "(for generate a config) A config file will be generated in project root. You should specify as absolute path")
 	configPath  = flag.String("config", "", "(for mockgen/chack) The path to config file. You can use both absolute path and relative path")
+	concurrency = flag.Int("concurrency", 1, "Number of processes in parallel.")
 
 	// flags for mockgen
 	source          = flag.String("source", "", "(source mode) Input Go source file; enables source mode.")
@@ -50,6 +51,7 @@ func main() {
 		Args: realmain.Args{
 			ProjectRoot:     *projectRoot,
 			ConfigPath:      *configPath,
+			Concurrency:     *concurrency,
 			Source:          *source,
 			Destination:     *destination,
 			MockNames:       *packageOut,
