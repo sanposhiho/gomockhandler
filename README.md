@@ -64,7 +64,9 @@ gomockhandler will generate a config file named `gomockhandler.json` in your pro
 gomockhandler -config=gomockhandler.json -concurrency=100 mockgen
 ```
 
-### check your mock is up-to-date
+### check if mock is up-to-date
+
+It is useful for ci to check if all mocks are up-to-date
 
 ```
 gomockhandler -config=gomockhandler.json check
