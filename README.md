@@ -1,6 +1,7 @@
 # gomockhandler
 
 gomockhandler handler of [golang/mock](https://github.com/golang/mock), as the name implies.
+
 People usually create mock with `go generate`. 
 But, `go generate` is not fast. And we cannot easily check if mock is up-to-date.
 
