@@ -6,21 +6,21 @@ import (
 )
 
 type Runner struct {
-	PackageName     string
-	Interfaces      string
-	Source          string
-	Destination     string
-	Package         string
-	Imports         string
-	AuxFiles        string
-	BuildFlags      string
-	MockNames       string
-	SelfPackage     string
-	CopyrightFile   string
-	ExecOnly        string
-	ProgOnly        bool
-	WritePkgComment bool
-	DebugParser     bool
+	PackageName     string `json:"package_name"`
+	Interfaces      string `json:"interfaces"`
+	Source          string `json:"source"`
+	Destination     string `json:"destination"`
+	Package         string `json:"package"`
+	Imports         string `json:"imports"`
+	AuxFiles        string `json:"aux_files"`
+	BuildFlags      string `json:"build_flags"`
+	MockNames       string `json:"mock_names"`
+	SelfPackage     string `json:"self_package"`
+	CopyrightFile   string `json:"copyright_file"`
+	ExecOnly        string `json:"exec_only"`
+	ProgOnly        bool   `json:"prog_only"`
+	WritePkgComment bool   `json:"write_pkg_comment"`
+	DebugParser     bool   `json:"debug_parser"`
 }
 
 func NewRunner(pn, ifs, source, dest, pkg, imp, af, bf, mn, spkg, cf, eo string, po, wpc, dp bool) *Runner {
@@ -41,6 +41,14 @@ func NewRunner(pn, ifs, source, dest, pkg, imp, af, bf, mn, spkg, cf, eo string,
 		WritePkgComment: wpc,
 		DebugParser:     dp,
 	}
+}
+
+func (r *Runner) SetSource(new string) {
+	r.Source = new
+}
+
+func (r *Runner) SetDestination(new string) {
+	r.Destination = new
 }
 
 func (r *Runner) Run() error {

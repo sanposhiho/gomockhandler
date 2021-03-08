@@ -1,24 +1,27 @@
 package realmain
 
-import "github.com/sanposhiho/gomockhandler/model"
+import (
+	"github.com/sanposhiho/gomockhandler/mockgen"
+	"github.com/sanposhiho/gomockhandler/model"
+)
 
 type ChunkRepo interface {
-	Put(m *model.Chunk) error
-	Get() (*model.Chunk, error)
-}
-
-type MockgenRunner interface {
-	Run() error
+	Put(m *model.Config, path string) error
+	Get(path string) (*model.Config, error)
 }
 
 type Runner struct {
 	ChunkRepo     ChunkRepo
-	MockgenRunner MockgenRunner
+	MockgenRunner mockgen.Runner
 
 	Args Args
 }
 
 type Args struct {
+	ProjectRoot string
+
+	ConfigPath string
+
 	Source          string
 	Destination     string
 	MockNames       string

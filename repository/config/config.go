@@ -1,4 +1,4 @@
-package chunk
+package config
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"github.com/sanposhiho/gomockhandler/model"
 )
 
-const filename = "gomockhandler.json"
+const Filename = "gomockhandler.json"
 
 type Repository struct{}
 
@@ -17,27 +17,27 @@ func NewRepository() Repository {
 	return Repository{}
 }
 
-func (r *Repository) Put(m *model.Chunk) error {
+func (r *Repository) Put(m *model.Config, path string) error {
 	d, err := easyjson.Marshal(m)
 	if err != nil {
 		return fmt.Errorf("easyjson marshal: %w", err)
 	}
 
-	return ioutil.WriteFile(filename, d, 0644)
+	return ioutil.WriteFile(path, d, 0644)
 }
 
-func (r *Repository) Get() (*model.Chunk, error) {
-	_, err := os.Stat(filename)
+func (r *Repository) Get(path string) (*model.Config, error) {
+	_, err := os.Stat(path)
 	if err != nil {
 		return nil, err
 	}
 
-	raw, err := ioutil.ReadFile(filename)
+	raw, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("read file: %w", err)
 	}
 
-	var m model.Chunk
+	var m model.Config
 	err = easyjson.Unmarshal(raw, &m)
 	if err != nil {
 		return nil, fmt.Errorf("easyjson unmarshal: %w", err)
