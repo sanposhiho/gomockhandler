@@ -2,7 +2,11 @@
 
 gomockhandler handler of [golang/mock](https://github.com/golang/mock), as the name implies.
 
-People usually create mock with `go generate`. 
+People usually create mock with `go generate` like below.
+```
+//go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAG
+```
+
 But, `go generate` is not fast. And we cannot easily check if mock is up-to-date.
 
 - You can generate mocks more **quickly** :rocket:. Your mock will be generated in parallel.
