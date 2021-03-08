@@ -5,7 +5,7 @@ If you find any bugs or have feature requests, please feel free to create an iss
 
 gomockhandler handler of [golang/mock](https://github.com/golang/mock), as the name implies.
 
-Some people often create mock with `go generate` like below.
+Some of you may often create mock with `go generate` like below.
 ```
 //go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAG
 ```
