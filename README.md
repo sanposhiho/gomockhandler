@@ -1,10 +1,14 @@
 # gomockhandler
 
-[WIP] gomockhandler is a simple wrapper of [mockgen](https://github.com/golang/mock).
+gomockhandler handler of [golang/mock](https://github.com/golang/mock), as the name implies.
 
-- You can use the same options as mockgen to generate mocks.
+People usually create mock with `go generate`. But, `go generate` is not fast.
+Using `gomockhandler`, we can manage our mocks from one config file, and can manage
+
+- You can generate mocks more quickly.
 - You can check if mock is up to date.
-- [optional] You can manage your mocks in one config file.
+- You can manage your mocks in one config file.
+- You can generate the config of gomockhandler just by rewriting `go:generate` comment a little bit
 
 ## Install
 
@@ -23,55 +27,31 @@ go install github.com/sanposhiho/gomockhandler
 
 ## How to use
 
-### Generate mock
+### [preparation] generate config file by rewriting `go:generate` comment
 
-You can use the same options as mockgen to generate mocks.
+replace from `mockgen` to `gomockhandler -project_root=/path/to/project_root`, and run `go generate ./...` in your project.
 
-`mockgen` has two modes of operation: source and reflect, and, gomockhandler support both.
-
-Example(Source mode):
 ```
-gomockhandler -source=foo.go [other options]
+- //go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAG
++ //go:generate gomockhandler -project_root=/path/to/project -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAG
 ```
 
-Example(Reflect mode):
+gomockhandler generate `gomockhandler.json` in your project root directory.
+
+### generate mock
+
 ```
-gomockhandler [options] database/sql/driver Conn,Driver
-```
-
-See [golang/mock#running-mockgen](https://github.com/golang/mock#running-mockgen) for more information.
-
-### Check if mock is up-to-date
-
-You can check if mock is up to date with `-check=true` flag.
-
-Example(Source mode):
-```
-gomockhandler -source=foo.go -check=true [other options]
+gomockhandler -config=gomockhandler.json -concurrency=100 mockgen
 ```
 
-Example(Reflect mode):
+### check your mock is up-to-date
+
 ```
-gomockhandler -check=true [options] database/sql/driver Conn,Driver
+gomockhandler -config=gomockhandler.json check
 ```
 
-You can see the error if the mock is not up to date.
+You can see the error if some mocks are not up to date.
 
 ```
 2021/03/06 02:37:16 mock is not up to date. source: user.go, destination: ../mock/user.go
 ```
-
-### [optional] manage all mocks on one config
-
-**TBD**
-
-## Project status
-
-- [x] can generate mocks with the same options as mockgen.
-  - [x] [Source mode](https://github.com/golang/mock#source-mode)
-  - [x] [Reflect mode](https://github.com/golang/mock#reflect-mode)
-- [ ] can check if mock is up to date.
-  - [x] check by comparing.
-  - [ ] check by checking `gomockhandler.json`(in order to detect deletion of the original interface).
-- [ ] can manage all mocks in one config file. 
-  - [ ] create mocks from the config file.
