@@ -2,7 +2,7 @@
 
 gomockhandler handler of [golang/mock](https://github.com/golang/mock), as the name implies.
 
-People usually create mock with `go generate` like below.
+Some people often create mock with `go generate` like below.
 ```
 //go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAG
 ```
