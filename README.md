@@ -41,7 +41,9 @@ go install github.com/sanposhiho/gomockhandler
 
 ## How to use
 
-### [preparation] generate config file by rewriting `go:generate` comment
+### [preparation] generate config file
+
+You can generate config file by rewriting `go:generate` comment a little bit.
 
 replace from `mockgen` to `gomockhandler -project_root=/path/to/project_root`, and run `go generate ./...` in your project.
 
@@ -50,7 +52,7 @@ replace from `mockgen` to `gomockhandler -project_root=/path/to/project_root`, a
 + //go:generate gomockhandler -project_root=/path/to/project -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAG
 ```
 
-gomockhandler generate `gomockhandler.json` in your project root directory.
+gomockhandler will generate `gomockhandler.json` in your project root directory.
 
 ### generate mock
 
