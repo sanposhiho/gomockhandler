@@ -79,3 +79,9 @@ Example(Reflect mode):
 ```
 gomockhandler [options] database/sql/driver Conn,Driver
 ```
+
+### Edit/Delete mocks
+
+Now, you can directly modify a config to edit/delete mocks.
+
+I'm working on developing it to be able to edit/delete it from the CLI.
