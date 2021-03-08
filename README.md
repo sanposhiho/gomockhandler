@@ -10,7 +10,7 @@ Some of you may often create mock with `go generate` like below.
 //go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAG
 ```
 
-But, `go generate` is not fast. And we cannot easily check if mock is up-to-date.
+But, it will take time to execute `go generate ./...` for projects with many files. And we cannot easily check if mock is up-to-date.
 
 With `gomockhandler`, 
 
