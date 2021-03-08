@@ -12,6 +12,8 @@ Some of you may often create mock with `go generate` like below.
 
 But, `go generate` is not fast. And we cannot easily check if mock is up-to-date.
 
+With `gomockhandler`, 
+
 - You can generate mocks more **quickly** :rocket:. Your mock will be generated in parallel.
 - You can check if mock is up-to-date :sparkles:.
 - You can manage your mocks in one config file :books:.
