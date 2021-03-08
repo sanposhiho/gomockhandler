@@ -2,6 +2,10 @@
 easyjson:
 	easyjson -all ./model/config.go
 
+.PHONY:build
+build:
+	go build .
+
 # test on playground
 .PHONY:playground
 playground:

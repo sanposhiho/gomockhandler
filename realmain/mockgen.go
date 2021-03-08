@@ -1,11 +1,14 @@
 package realmain
 
 import (
+	"context"
+	"fmt"
 	"log"
 	"strings"
 
 	"github.com/sanposhiho/gomockhandler/model"
 	"github.com/sanposhiho/gomockhandler/realmain/util"
+	"golang.org/x/sync/errgroup"
 )
 
 func (r Runner) Mockgen() {
@@ -14,30 +17,36 @@ func (r Runner) Mockgen() {
 		log.Fatalf("failed to get config: %v", err)
 	}
 
-	// TODO: run in parallels
+	g, _ := errgroup.WithContext(context.Background())
 	for _, m := range ch.Mocks {
-		var destination string
-		switch m.Mode {
-		case model.Unknown:
-			log.Printf("unknown mock detected\n")
-			continue
-		case model.ReflectMode:
-			err = m.ReflectModeRunner.Run()
-			destination = m.ReflectModeRunner.Destination
-		case model.SourceMode:
-			err = m.SourceModeRunner.Run()
-			destination = m.SourceModeRunner.Destination
-		}
-		if err != nil {
-			log.Fatalf("failed to run mockgen: %v", err)
-		}
+		g.Go(func() error {
+			var destination string
+			switch m.Mode {
+			case model.Unknown:
+				log.Printf("unknown mock detected\n")
+				return nil
+			case model.ReflectMode:
+				err = m.ReflectModeRunner.Run()
+				destination = m.ReflectModeRunner.Destination
+			case model.SourceMode:
+				err = m.SourceModeRunner.Run()
+				destination = m.SourceModeRunner.Destination
+			}
+			if err != nil {
+				return fmt.Errorf("run mockgen: %v", err)
+			}
 
-		checksum, err := util.MockChackSum(destination)
-		if err != nil {
-			log.Fatalf("failed to calculate checksum of the mock: %v", err)
-		}
+			checksum, err := util.MockChackSum(destination)
+			if err != nil {
+				return fmt.Errorf("calculate checksum of the mock: %v", err)
+			}
 
-		m.CheckSum = checksum
+			m.CheckSum = checksum
+			return nil
+		})
+	}
+	if err := g.Wait(); err != nil {
+		log.Fatalf("failed to run: %v", err.Error())
 	}
 
 	if err := r.ChunkRepo.Put(ch, r.Args.ConfigPath); err != nil {
