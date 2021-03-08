@@ -64,7 +64,7 @@ You can see the error if some mocks are not up to date.
 
 ### Add a new mock to be generated
 
-You can use the same options as mockgen to add a new mock to be generated.
+You can add a new mock to be generated from CLI. You can use the same options as mockgen to add a new mock.
 `mockgen` has two modes of operation: source and reflect, and, gomockhandler support both.
 
 See [golang/mock#running-mockgen](https://github.com/golang/mock#running-mockgen) for more information.
