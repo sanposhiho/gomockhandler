@@ -3,7 +3,7 @@
 **This tool is currently under development.
 If you find any bugs or have feature requests, please feel free to create an issue.**
 
-gomockhandler handler of [golang/mock](https://github.com/golang/mock), as the name implies.
+gomockhandler is handler of [golang/mock](https://github.com/golang/mock), as the name implies.
 
 Some of you may often create mock with `go generate` like below.
 ```
