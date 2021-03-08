@@ -6,16 +6,16 @@ import (
 )
 
 type Runner struct {
-	Source          string
-	Destination     string
-	Package         string
-	Imports         string
-	AuxFiles        string
-	MockNames       string
-	SelfPackage     string
-	CopyrightFile   string
-	WritePkgComment bool
-	DebugParser     bool
+	Source          string `json:"source"`
+	Destination     string `json:"destination"`
+	Package         string `json:"package"`
+	Imports         string `json:"imports"`
+	AuxFiles        string `json:"aux_files"`
+	MockNames       string `json:"mock_names"`
+	SelfPackage     string `json:"self_package"`
+	CopyrightFile   string `json:"copyright_file"`
+	WritePkgComment bool   `json:"write_pkg_comment"`
+	DebugParser     bool   `json:"debug_parser"`
 }
 
 func NewRunner(source, dest, pkg, imp, af, mn, spkg, cf string, wpc, dp bool) *Runner {
@@ -31,6 +31,14 @@ func NewRunner(source, dest, pkg, imp, af, mn, spkg, cf string, wpc, dp bool) *R
 		WritePkgComment: wpc,
 		DebugParser:     dp,
 	}
+}
+
+func (r *Runner) SetSource(new string) {
+	r.Source = new
+}
+
+func (r *Runner) SetDestination(new string) {
+	r.Destination = new
 }
 
 func (r *Runner) Run() error {

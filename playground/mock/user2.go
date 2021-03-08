@@ -46,3 +46,17 @@ func (mr *MockUser2MockRecorder) String() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "String", reflect.TypeOf((*MockUser2)(nil).String))
 }
+
+// String2 mocks base method.
+func (m *MockUser2) String2() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "String2")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// String2 indicates an expected call of String2.
+func (mr *MockUser2MockRecorder) String2() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "String2", reflect.TypeOf((*MockUser2)(nil).String2))
+}

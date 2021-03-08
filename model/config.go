@@ -3,24 +3,24 @@ package model
 import "errors"
 
 //easyjson:json
-type Chunk struct {
+type Config struct {
 	// key: destination
 	Mocks map[string]*Mock `json:"mocks"`
 }
 
-func NewChunk() *Chunk {
-	return &Chunk{Mocks: map[string]*Mock{}}
+func NewChunk() *Config {
+	return &Config{Mocks: map[string]*Mock{}}
 }
 
-func (c *Chunk) PutMock(mock Mock) {
+func (c *Config) PutMock(mock Mock) {
 	c.Mocks[mock.Destination] = &mock
 }
 
 var (
-	ErrNotFound = errors.New("chunk is not found in chunk")
+	ErrNotFound = errors.New("config is not found in config")
 )
 
-func (c *Chunk) Find(destination string) (*Mock, error) {
+func (c *Config) Find(destination string) (*Mock, error) {
 	if m, ok := c.Mocks[destination]; ok {
 		return m, nil
 	}
