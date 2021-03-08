@@ -14,7 +14,7 @@ But, `go generate` is not fast. And we cannot easily check if mock is up-to-date
 - You can manage your mocks in one config file :books:.
 - You can generate the config of gomockhandler **just by rewriting `go:generate` comment** a little bit :wrench:.
 
-Here is a picture of the mock being generated in half the time
+Here is a example of the mock being generated in half the time with `gomockhandler`.
 
 <img width="825" alt="Screen Shot 2021-03-08 at 23 28 46" src="https://user-images.githubusercontent.com/44139130/110334403-1444ba00-8066-11eb-9377-0d8c98a84c9e.png">
 
