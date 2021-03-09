@@ -65,6 +65,8 @@ gomockhandler will generate a config file named `gomockhandler.json` in your pro
 
 ### generate mock
 
+You can generate all mocks from config.
+
 ```
 gomockhandler -config=gomockhandler.json -concurrency=100 mockgen
 ```
