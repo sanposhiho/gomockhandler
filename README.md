@@ -63,30 +63,6 @@ replace from `mockgen` to `gomockhandler -project_root=/path/to/project_root`, a
 
 gomockhandler will generate a config file named `gomockhandler.json` in your project root directory.
 
-### generate mock
-
-You can generate all mocks from config.
-
-```
-gomockhandler -config=gomockhandler.json -concurrency=100 mockgen
-```
-
-### check if mock is up-to-date
-
-It is useful for ci to check if all mocks are up-to-date
-
-```
-gomockhandler -config=gomockhandler.json check
-```
-
-You can see the error if some mocks are not up to date.
-
-```
-2021/03/06 02:37:16 mock is not up to date. source: user.go, destination: ../mock/user.go
-```
-
-## How to manage your mocks
-
 ### Add a new mock to be generated
 
 You can add a new mock to be generated from CLI. You can use the same options as mockgen to add a new mock. If the config file does not exist in your project root directory, it will be created.
@@ -112,3 +88,26 @@ gomockhandler -project_root=/path/to/project [options] database/sql/driver Conn,
 Currently, if you want to modify/delete the mock, you have to modify the config manually...
 
 I'm working on developing it to be able to edit/delete it from the CLI.
+
+### generate mock
+
+You can generate all mocks from config.
+
+```
+gomockhandler -config=gomockhandler.json -concurrency=100 mockgen
+```
+
+### check if mock is up-to-date
+
+It is useful for ci to check if all mocks are up-to-date
+
+```
+gomockhandler -config=gomockhandler.json check
+```
+
+You can see the error if some mocks are not up to date.
+
+```
+2021/03/06 02:37:16 mock is not up to date. source: user.go, destination: ../mock/user.go
+```
+
