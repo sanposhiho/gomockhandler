@@ -21,11 +21,14 @@ With `gomockhandler`,
 - You can manage your mocks in one config file :books:.
 - You can generate/edit the config of gomockhandler with CLI :wrench:.
 
-Here is some example of the mock being generated in half the time with `gomockhandler`.
+Here is some example of the mock being generated in half the time with `gomockhandler`. (I ran `mockgen` to generate same mocks in `go generate ./...`)
+
 
 <img width="825" alt="Screen Shot 2021-03-08 at 23 28 46" src="https://user-images.githubusercontent.com/44139130/110334403-1444ba00-8066-11eb-9377-0d8c98a84c9e.png">
 
-![sample2](https://user-images.githubusercontent.com/44139130/110412138-0b3c0300-80cf-11eb-9c63-44d8dd7e8cbe.jpg)
+
+![Screen Shot 2021-03-09 at 12 07 03](https://user-images.githubusercontent.com/44139130/110412721-fc098500-80cf-11eb-9de6-c98749b0a3fb.png)
+
 
 
 ## Install
