@@ -4,5 +4,4 @@ package interfaces
 
 type User interface {
 	String() string
-	String2() string
 }
