@@ -63,6 +63,9 @@ replace from `mockgen` to `gomockhandler -project_root=/path/to/project_root`, a
 
 gomockhandler will generate a config file named `gomockhandler.json` in your project root directory.
 
+After generating the config, your `go:generate` comments are no longer needed. You've been released from a slow-mockgen with `go generate`.
+Let's delete `go:generate` comments.
+
 ### Add a new mock to be generated
 
 You can add a new mock to be generated from CLI. You can use the same options as mockgen to add a new mock. If the config file does not exist in your project root directory, it will be created.
