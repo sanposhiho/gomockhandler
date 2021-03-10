@@ -9,7 +9,7 @@ import (
 	chunkrepo "github.com/sanposhiho/gomockhandler/repository/config"
 )
 
-// GenerateConfig generate config from `go generate`
+// GenerateConfig generate config
 func (r Runner) GenerateConfig() {
 	// create config in project root
 	configPath := r.Args.ProjectRoot + "/" + chunkrepo.Filename
