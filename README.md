@@ -124,6 +124,8 @@ I'm working on developing it to be able to edit/delete it from the CLI.
 
 You can generate all mocks from config.
 
+You don't have to specify config option, when you are in project root.
+
 ```
 gomockhandler -config=gomockhandler.json -concurrency=100 mockgen
 ```
@@ -131,6 +133,8 @@ gomockhandler -config=gomockhandler.json -concurrency=100 mockgen
 ## check if mock is up-to-date
 
 It is useful for ci to check if all mocks are up-to-date
+
+You don't have to specify config option, when you are in project root.
 
 ```
 gomockhandler -config=gomockhandler.json check
