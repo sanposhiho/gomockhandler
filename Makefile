@@ -34,4 +34,5 @@ playground-check:
 .PHONY:clean
 clean:
 	cd playground ;\
-	rm gomockhandler.json;
+	rm gomockhandler.json;\
+	rm -rf mock/
