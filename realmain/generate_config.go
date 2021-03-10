@@ -3,6 +3,7 @@ package realmain
 import (
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/sanposhiho/gomockhandler/model"
 	"github.com/sanposhiho/gomockhandler/realmain/util"
@@ -11,8 +12,12 @@ import (
 
 // GenerateConfig generate config
 func (r Runner) GenerateConfig() {
+	absRoot, err := filepath.Abs(r.Args.ProjectRoot)
+	if err != nil {
+		log.Fatalf("failed to get absolute project root: %w", err)
+	}
 	// create config in project root
-	configPath := r.Args.ProjectRoot + "/" + chunkrepo.Filename
+	configPath := absRoot + "/" + chunkrepo.Filename
 	chunk, err := r.ChunkRepo.Get(configPath)
 	if err != nil {
 		if !os.IsNotExist(err) {
