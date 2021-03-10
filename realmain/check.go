@@ -61,7 +61,11 @@ func (r Runner) Check() {
 
 			if m.CheckSum != checksum {
 				// mock is not up to date
-				log.Printf("[WARN] mock is not up to date. source: %s, destination: %s", source, destination)
+				if source == "" {
+					log.Printf("[WARN] mock is not up to date. destination: %s", destination)
+				} else {
+					log.Printf("[WARN] mock is not up to date. source: %s, destination: %s", source, destination)
+				}
 				isFail = true
 			}
 			return nil
