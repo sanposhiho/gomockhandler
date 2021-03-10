@@ -50,7 +50,7 @@ go install github.com/sanposhiho/gomockhandler
 
 ### [preparation] generate the config file
 
-See [# Add a new mock to be generated](#add-a-new-mock-to-be-generated).
+If you don't use `go:generate` to execute mockgen, see [#Add a new mock to be generated](#add-a-new-mock-to-be-generated).
 
 If you use `go:generate` to execute mockgen, you can generate the config file by rewriting `go:generate` comment a little bit.
 
