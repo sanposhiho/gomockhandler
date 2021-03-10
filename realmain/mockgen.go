@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"strings"
 
 	"github.com/sanposhiho/gomockhandler/model"
 	"github.com/sanposhiho/gomockhandler/realmain/util"
@@ -53,8 +52,4 @@ func (r Runner) Mockgen() {
 		log.Fatalf("failed to put config: %v", err)
 	}
 	return
-}
-
-func pathInProject(projectRoot, path string) string {
-	return strings.Replace(path, projectRoot, ".", 1)
 }

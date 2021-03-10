@@ -35,11 +35,11 @@ func (r Runner) GenerateConfig() {
 		if err != nil {
 			log.Fatalf("failed to get config: %v", err)
 		}
-		destinationPathInPro := pathInProject(r.Args.ProjectRoot, currentPath+"/"+r.Args.Destination)
+		destinationPathInPro := util.PathInProject(r.Args.ProjectRoot, currentPath+"/"+r.Args.Destination)
 		r.MockgenRunner.SetDestination(destinationPathInPro)
 
 		if r.Args.Source != "" {
-			sourcePathInPro := pathInProject(r.Args.ProjectRoot, currentPath+"/"+r.Args.Source)
+			sourcePathInPro := util.PathInProject(r.Args.ProjectRoot, currentPath+"/"+r.Args.Source)
 			r.MockgenRunner.SetSource(sourcePathInPro)
 		}
 		// store into config

@@ -4,6 +4,8 @@ import (
 	"crypto/md5"
 	"fmt"
 	"io/ioutil"
+	"path/filepath"
+	"strings"
 )
 
 func MockChackSum(filePath string) ([16]byte, error) {
@@ -14,4 +16,8 @@ func MockChackSum(filePath string) ([16]byte, error) {
 
 	hash := md5.Sum(file)
 	return hash, nil
+}
+
+func PathInProject(projectRoot, path string) string {
+	return filepath.Clean(strings.Replace(path, projectRoot, ".", 1))
 }
