@@ -18,6 +18,7 @@ func (r Runner) Mockgen() {
 
 	g, _ := errgroup.WithContext(context.Background())
 	for _, m := range ch.Mocks {
+		m := m
 		g.Go(func() error {
 			var destination string
 			switch m.Mode {
