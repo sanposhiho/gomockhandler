@@ -23,7 +23,7 @@ func (r Runner) Mockgen() {
 			var destination string
 			switch m.Mode {
 			case model.Unknown:
-				log.Printf("unknown mock detected\n")
+				log.Printf("[WARN] unknown mock detected\n")
 				return nil
 			case model.ReflectMode:
 				err = m.ReflectModeRunner.Run()

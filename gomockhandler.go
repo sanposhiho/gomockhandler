@@ -22,8 +22,8 @@ import (
 )
 
 var (
-	projectRoot = flag.String("project_root", "", "(for generate a config) A config file will be generated in project root. You should specify as absolute path")
-	configPath  = flag.String("config", "", "(for mockgen/chack) The path to config file. You can use both absolute path and relative path")
+	projectRoot = flag.String("project_root", "", "(for generate config) A config file will be generated in project root.")
+	configPath  = flag.String("config", "./gomockhandler.json", "(for mockgen/chack) The path to config file.")
 	concurrency = flag.Int("concurrency", 1, "Number of processes in parallel.")
 
 	// flags for mockgen
