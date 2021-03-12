@@ -136,7 +136,9 @@ gomockhandler -config=/path/to/config.json -concurrency=10 mockgen
 
 ## check if mock is up-to-date
 
-It is useful for ci to check if all mocks are up-to-date
+You can check if the mock is generated based on the latest interface.
+
+It is useful for ci.
 
 ```
 gomockhandler -config=/path/to/config.json -concurrency=10 check
