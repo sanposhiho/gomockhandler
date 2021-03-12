@@ -22,8 +22,7 @@ import (
 )
 
 var (
-	projectRoot = flag.String("project_root", "", "(for generate config) A config file will be generated in project root.")
-	configPath  = flag.String("config", "./gomockhandler.json", "(for mockgen/chack) The path to config file.")
+	configPath  = flag.String("config", "", "(for mockgen/chack) The path to config file.")
 	concurrency = flag.Int("concurrency", 1, "Number of processes in parallel.")
 
 	// flags for mockgen
@@ -49,7 +48,6 @@ func main() {
 	rm := realmain.Runner{
 		ChunkRepo: &repo,
 		Args: realmain.Args{
-			ProjectRoot:     *projectRoot,
 			ConfigPath:      *configPath,
 			Concurrency:     *concurrency,
 			Source:          *source,
@@ -66,6 +64,10 @@ func main() {
 			ProgOnly:        *progOnly,
 			DebugParser:     *debugParser,
 		},
+	}
+
+	if *configPath == "" {
+		log.Fatal("Need -config option")
 	}
 
 	var realmain func()
