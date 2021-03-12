@@ -7,17 +7,15 @@ import (
 
 	"github.com/sanposhiho/gomockhandler/model"
 	"github.com/sanposhiho/gomockhandler/realmain/util"
-	chunkrepo "github.com/sanposhiho/gomockhandler/repository/config"
 )
 
 // GenerateConfig generate config
 func (r Runner) GenerateConfig() {
-	absRoot, err := filepath.Abs(r.Args.ProjectRoot)
+	configPath, err := filepath.Abs(r.Args.ConfigPath)
 	if err != nil {
 		log.Fatalf("failed to get absolute project root: %w", err)
 	}
-	// create config in project root
-	configPath := absRoot + "/" + chunkrepo.Filename
+	configDir, _ := filepath.Split(configPath)
 	chunk, err := r.ChunkRepo.Get(configPath)
 	if err != nil {
 		if !os.IsNotExist(err) {
@@ -40,11 +38,11 @@ func (r Runner) GenerateConfig() {
 		if err != nil {
 			log.Fatalf("failed to get config: %v", err)
 		}
-		destinationPathInPro := util.PathInProject(absRoot, currentPath+"/"+r.Args.Destination)
+		destinationPathInPro := util.PathInProject(configDir, currentPath+"/"+r.Args.Destination)
 		r.MockgenRunner.SetDestination(destinationPathInPro)
 
 		if r.Args.Source != "" {
-			sourcePathInPro := util.PathInProject(absRoot, currentPath+"/"+r.Args.Source)
+			sourcePathInPro := util.PathInProject(configDir, currentPath+"/"+r.Args.Source)
 			r.MockgenRunner.SetSource(sourcePathInPro)
 		}
 		// store into config
