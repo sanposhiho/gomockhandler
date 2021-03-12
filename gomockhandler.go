@@ -74,6 +74,8 @@ func main() {
 		realmain = rm.Mockgen
 	case "check":
 		realmain = rm.Check
+	case "deletemock":
+		realmain = rm.DeleteMock
 	default:
 		rm.MockgenRunner = prepareMockgenRunner()
 		realmain = rm.GenerateConfig
