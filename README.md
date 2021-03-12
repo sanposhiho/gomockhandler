@@ -117,7 +117,7 @@ After generating the config, your `go:generate` comments are no longer needed. Y
 
 Let's delete all `go:generate` comments for mockgen in your project.
 
-### delete mocks
+### delete mocks to be generated from config
 
 You can remove the mocks to be generated from the config.
 
