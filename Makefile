@@ -30,6 +30,15 @@ playground-check:
 	../gomockhandler -config=gomockhandler.json check ;\
 	rm ../gomockhandler;
 
+# test on playground
+.PHONY:playground-delete
+playground-delete:
+	go build . ;\
+	cd playground ;\
+	../gomockhandler -config=gomockhandler.json -destination=./mock/user.go deletemock ;\
+	rm ../gomockhandler;
+
+
 # clean playground
 .PHONY:clean
 clean:

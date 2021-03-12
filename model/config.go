@@ -16,6 +16,10 @@ func (c *Config) PutMock(mock Mock) {
 	c.Mocks[mock.Destination] = &mock
 }
 
+func (c *Config) DeleteMock(dest string) {
+	delete(c.Mocks, dest)
+}
+
 var (
 	ErrNotFound = errors.New("config is not found in config")
 )

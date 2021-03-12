@@ -89,12 +89,12 @@ You can use all options of mockgen to add a new mock.
 
 See [golang/mock#running-mockgen](https://github.com/golang/mock#running-mockgen) for more information.
 
-Example(Source mode):
+Source mode:
 ```
 gomockhandler -project_root=/path/to/project -source=foo.go [other options]
 ```
 
-Example(Reflect mode):
+Reflect mode:
 ```
 gomockhandler -project_root=/path/to/project [options] database/sql/driver Conn,Driver
 ```
@@ -112,13 +112,17 @@ replace from `mockgen` to `gomockhandler -project_root=/path/to/project_root`, a
 
 After generating the config, your `go:generate` comments are no longer needed. You've been released from a slow-mockgen with `go generate`!
 
-Let's delete `go:generate` comments.
+Let's delete all `go:generate` comments for mockgen in your project.
 
-### [WIP] Delete mocks
+### Delete mocks
 
-Currently, if you want to delete the mock, you have to modify the config manually...
+You can remove the mocks to be generated from the config.
 
-I'm working on developing it to be able to edit/delete it from the CLI.
+You don't have to specify config option, when you are in project root.
+
+```
+gomockhandler -config=gomockhandler.json -destination=./mock/user.go deletemock 
+```
 
 ## generate mock
 
