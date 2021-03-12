@@ -30,7 +30,7 @@ func (r Runner) GenerateConfig() {
 
 	if r.Args.Destination != "" {
 		// calculate mock's check sum
-		checksum, err := util.MockChackSum(r.Args.Destination)
+		checksum, err := util.MockCheckSum(r.Args.Destination)
 		if err != nil {
 			log.Fatalf("failed to calculate checksum of the mock: %v", err)
 		}

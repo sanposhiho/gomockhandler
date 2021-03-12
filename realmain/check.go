@@ -54,7 +54,7 @@ func (r Runner) Check() {
 				return fmt.Errorf("run mockgen: %v", err)
 			}
 
-			checksum, err := util.MockChackSum(tmpFile)
+			checksum, err := util.MockCheckSum(tmpFile)
 			if err != nil {
 				return fmt.Errorf("calculate checksum of the mock: %v", err)
 			}

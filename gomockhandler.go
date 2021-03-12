@@ -22,8 +22,8 @@ import (
 )
 
 var (
-	configPath  = flag.String("config", "", "(for mockgen/chack) The path to config file.")
-	concurrency = flag.Int("concurrency", 1, "Number of processes in parallel.")
+	configPath  = flag.String("config", "", "(required) The path to config file.")
+	concurrency = flag.Int("concurrency", 1, "(mockgen/check) Number of processes in parallel.")
 
 	// flags for mockgen
 	source          = flag.String("source", "", "(source mode) Input Go source file; enables source mode.")
