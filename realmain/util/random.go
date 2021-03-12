@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func MockChackSum(filePath string) ([16]byte, error) {
+func MockCheckSum(filePath string) ([16]byte, error) {
 	file, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return [16]byte{}, fmt.Errorf("failed read file. filename: %s, err: %w", filePath)
@@ -19,5 +19,5 @@ func MockChackSum(filePath string) ([16]byte, error) {
 }
 
 func PathInProject(projectRoot, path string) string {
-	return filepath.Clean(strings.Replace(path, projectRoot, ".", 1))
+	return filepath.Clean(strings.Replace(path, projectRoot, "", 1))
 }
