@@ -1,12 +1,12 @@
-package realmain
+package command
 
 import (
 	"context"
 	"fmt"
 	"log"
 
+	"github.com/sanposhiho/gomockhandler/command/util"
 	"github.com/sanposhiho/gomockhandler/model"
-	"github.com/sanposhiho/gomockhandler/realmain/util"
 	"golang.org/x/sync/errgroup"
 )
 

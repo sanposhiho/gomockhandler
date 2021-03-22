@@ -1,12 +1,12 @@
-package realmain
+package command
 
 import (
 	"log"
 	"os"
 	"path/filepath"
 
+	"github.com/sanposhiho/gomockhandler/command/util"
 	"github.com/sanposhiho/gomockhandler/model"
-	"github.com/sanposhiho/gomockhandler/realmain/util"
 )
 
 // GenerateConfig generate config

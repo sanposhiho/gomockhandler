@@ -1,4 +1,4 @@
-package realmain
+package command
 
 import (
 	"log"

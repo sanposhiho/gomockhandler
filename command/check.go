@@ -1,4 +1,4 @@
-package realmain
+package command
 
 import (
 	"context"
@@ -9,8 +9,8 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
+	"github.com/sanposhiho/gomockhandler/command/util"
 	"github.com/sanposhiho/gomockhandler/model"
-	"github.com/sanposhiho/gomockhandler/realmain/util"
 )
 
 func (r Runner) Check() {
