@@ -14,7 +14,7 @@ import (
 
 	"github.com/sanposhiho/gomockhandler/mockgen"
 
-	"github.com/sanposhiho/gomockhandler/realmain"
+	"github.com/sanposhiho/gomockhandler/command"
 
 	"github.com/sanposhiho/gomockhandler/mockgen/reflectmode"
 	"github.com/sanposhiho/gomockhandler/mockgen/sourcemode"
@@ -45,9 +45,9 @@ func main() {
 	flag.Parse()
 
 	repo := mockrepo.NewRepository()
-	rm := realmain.Runner{
+	cmd := command.Runner{
 		ChunkRepo: &repo,
-		Args: realmain.Args{
+		Args: command.Args{
 			ConfigPath:      *configPath,
 			Concurrency:     *concurrency,
 			Source:          *source,
@@ -70,20 +70,20 @@ func main() {
 		log.Fatal("Need -config option")
 	}
 
-	var realmain func()
+	var cmdFunc func()
 	switch flag.Arg(0) {
 	case "mockgen":
-		realmain = rm.Mockgen
+		cmdFunc = cmd.Mockgen
 	case "check":
-		realmain = rm.Check
+		cmdFunc = cmd.Check
 	case "deletemock":
-		realmain = rm.DeleteMock
+		cmdFunc = cmd.DeleteMock
 	default:
-		rm.MockgenRunner = prepareMockgenRunner()
-		realmain = rm.GenerateConfig
+		cmd.MockgenRunner = prepareMockgenRunner()
+		cmdFunc = cmd.GenerateConfig
 	}
 
-	realmain()
+	cmdFunc()
 }
 
 func prepareMockgenRunner() mockgen.Runner {

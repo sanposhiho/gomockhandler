@@ -1,4 +1,4 @@
-package realmain
+package command
 
 import (
 	"github.com/sanposhiho/gomockhandler/mockgen"
