@@ -205,23 +205,15 @@ func easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerModel1(out *jwriter.W
 		out.RawString(prefix)
 		out.String(string(in.Mode))
 	}
-	{
+	if in.ReflectModeRunner != nil {
 		const prefix string = ",\"reflect_mode_runner\":"
 		out.RawString(prefix)
-		if in.ReflectModeRunner == nil {
-			out.RawString("null")
-		} else {
-			easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerMockgenReflectmode(out, *in.ReflectModeRunner)
-		}
+		easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerMockgenReflectmode(out, *in.ReflectModeRunner)
 	}
-	{
+	if in.SourceModeRunner != nil {
 		const prefix string = ",\"source_mode_runner\":"
 		out.RawString(prefix)
-		if in.SourceModeRunner == nil {
-			out.RawString("null")
-		} else {
-			easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerMockgenSourcemode(out, *in.SourceModeRunner)
-		}
+		easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerMockgenSourcemode(out, *in.SourceModeRunner)
 	}
 	out.RawByte('}')
 }

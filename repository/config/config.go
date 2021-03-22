@@ -1,6 +1,8 @@
 package config
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -8,8 +10,6 @@ import (
 	"github.com/mailru/easyjson"
 	"github.com/sanposhiho/gomockhandler/model"
 )
-
-const Filename = "gomockhandler.json"
 
 type Repository struct{}
 
@@ -23,7 +23,11 @@ func (r *Repository) Put(m *model.Config, path string) error {
 		return fmt.Errorf("easyjson marshal: %w", err)
 	}
 
-	return ioutil.WriteFile(path, d, 0644)
+	var buf bytes.Buffer
+	if err := json.Indent(&buf, d, "", "	"); err != nil {
+		return fmt.Errorf("format json: %w", err)
+	}
+	return ioutil.WriteFile(path, buf.Bytes(), 0644)
 }
 
 func (r *Repository) Get(path string) (*model.Config, error) {
