@@ -18,8 +18,8 @@ type Mock struct {
 	Destination       string              `json:"destination"`
 	CheckSum          [16]byte            `json:"checksum"`
 	Mode              mode                `json:"mode"`
-	ReflectModeRunner *reflectmode.Runner `json:"reflect_mode_runner"`
-	SourceModeRunner  *sourcemode.Runner  `json:"source_mode_runner"`
+	ReflectModeRunner *reflectmode.Runner `json:"reflect_mode_runner,omitempty"`
+	SourceModeRunner  *sourcemode.Runner  `json:"source_mode_runner,omitempty"`
 }
 
 func NewMock(destination string, checksum [16]byte, genrunner mockgen.Runner) Mock {
