@@ -134,6 +134,8 @@ You can generate all mocks from config.
 gomockhandler -config=/path/to/config.json -concurrency=10 mockgen
 ```
 
+As you can see, by specifying `concurrency`, you can generate mocks in parallel.
+
 ## check if mock is up-to-date
 
 You can check if the mock is generated based on the latest interface.
