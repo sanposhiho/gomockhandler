@@ -16,23 +16,6 @@ type Runner interface {
 	GetSource() string
 }
 
-// TestRun checks if mockgen can run with the given options.
-// It does not actually update the mock.
-func TestRun(r Runner) error {
-	d := r.GetDestination()
-	tmpFile := util.TmpFilePath(d)
-	defer os.Remove(tmpFile)
-
-	// use tmpfile to test generating mock
-	r.SetDestination(tmpFile)
-	defer r.SetDestination(d)
-
-	if err := r.Run(); err != nil {
-		return fmt.Errorf("run mockgen: %w", err)
-	}
-	return nil
-}
-
 func Checksum(r Runner) ([16]byte, error) {
 	d := r.GetDestination()
 	tmpFile := util.TmpFilePath(d)
