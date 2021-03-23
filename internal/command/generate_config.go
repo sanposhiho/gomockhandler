@@ -9,56 +9,60 @@ import (
 	"github.com/sanposhiho/gomockhandler/internal/util"
 )
 
-// GenerateConfig generate config
+// GenerateConfig generates config
+// require destination option.
 func (r Runner) GenerateConfig() {
 	configPath, err := filepath.Abs(r.Args.ConfigPath)
 	if err != nil {
 		log.Fatalf("failed to get absolute project root: %v", err)
 	}
 
-	if r.Args.Destination != "" {
-		currentPath, err := os.Getwd()
-		if err != nil {
+	// get the path where command is executed
+	originalPath, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("failed to get config: %v", err)
+	}
+	configDir, configFile := filepath.Split(configPath)
+
+	// move to the config directory
+	if err := os.Chdir(configDir); err != nil {
+		log.Fatalf("failed to change dir: %v", err)
+	}
+
+	// get config
+	chunk, err := r.ConfigRepo.Get(configFile)
+	if err != nil {
+		if !os.IsNotExist(err) {
 			log.Fatalf("failed to get config: %v", err)
 		}
-		configDir, configFile := filepath.Split(configPath)
+		chunk = model.NewChunk()
+	}
 
-		if err := os.Chdir(configDir); err != nil {
-			log.Fatalf("failed to change dir: %v", err)
-		}
+	// change destination as seen from the config directory.
+	destinationPathInPro := util.PathInProject(configDir, originalPath+"/"+r.Args.Destination)
+	r.MockgenRunner.SetDestination(destinationPathInPro)
 
-		chunk, err := r.ChunkRepo.Get(configFile)
-		if err != nil {
-			if !os.IsNotExist(err) {
-				log.Fatalf("failed to get config: %v", err)
-			}
-			chunk = model.NewChunk()
-		}
+	if r.Args.Source != "" {
+		// change source as seen from the config directory.
+		sourcePathInPro := util.PathInProject(configDir, originalPath+"/"+r.Args.Source)
+		r.MockgenRunner.SetSource(sourcePathInPro)
+	}
 
-		destinationPathInPro := util.PathInProject(configDir, currentPath+"/"+r.Args.Destination)
-		r.MockgenRunner.SetDestination(destinationPathInPro)
+	if err := r.MockgenRunner.Run(); err != nil {
+		log.Fatalf("failed to run mockgen: %v", err)
+	}
 
-		if r.Args.Source != "" {
-			sourcePathInPro := util.PathInProject(configDir, currentPath+"/"+r.Args.Source)
-			r.MockgenRunner.SetSource(sourcePathInPro)
-		}
+	// calculate mock's check sum
+	checksum, err := util.MockCheckSum(r.MockgenRunner.GetDestination())
+	if err != nil {
+		log.Fatalf("failed to calculate checksum of the mock: %v", err)
+	}
 
-		if err := r.MockgenRunner.Run(); err != nil {
-			log.Fatalf("failed to run mockgen: %v", err)
-		}
-
-		// calculate mock's check sum
-		checksum, err := util.MockCheckSum(r.MockgenRunner.GetDestination())
-		if err != nil {
-			log.Fatalf("failed to calculate checksum of the mock: %v", err)
-		}
-
-		// store into config
-		mock := model.NewMock(destinationPathInPro, checksum, r.MockgenRunner)
-		chunk.PutMock(mock)
-		if err := r.ChunkRepo.Put(chunk, configFile); err != nil {
-			log.Fatalf("failed to put config: %v", err)
-		}
+	// store into config
+	mock := model.NewMock(destinationPathInPro, checksum, r.MockgenRunner)
+	chunk.PutMock(mock)
+	if err := r.ConfigRepo.Put(chunk, configFile); err != nil {
+		log.Fatalf("failed to put config: %v", err)
 	}
 	return
 }

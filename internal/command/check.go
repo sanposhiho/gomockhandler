@@ -15,7 +15,7 @@ import (
 )
 
 func (r Runner) Check() {
-	ch, err := r.ChunkRepo.Get(r.Args.ConfigPath)
+	ch, err := r.ConfigRepo.Get(r.Args.ConfigPath)
 	if err != nil {
 		log.Fatalf("failed to get config: %v", err)
 	}

@@ -5,13 +5,13 @@ import (
 	"github.com/sanposhiho/gomockhandler/internal/model"
 )
 
-type ChunkRepo interface {
+type ConfigRepo interface {
 	Put(m *model.Config, path string) error
 	Get(path string) (*model.Config, error)
 }
 
 type Runner struct {
-	ChunkRepo     ChunkRepo
+	ConfigRepo    ConfigRepo
 	MockgenRunner mockgen.Runner
 
 	Args Args

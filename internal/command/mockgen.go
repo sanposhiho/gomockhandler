@@ -13,7 +13,7 @@ import (
 )
 
 func (r Runner) Mockgen() {
-	ch, err := r.ChunkRepo.Get(r.Args.ConfigPath)
+	ch, err := r.ConfigRepo.Get(r.Args.ConfigPath)
 	if err != nil {
 		log.Fatalf("failed to get config: %v", err)
 	}
@@ -60,7 +60,7 @@ func (r Runner) Mockgen() {
 		log.Fatalf("failed to run: %v", err.Error())
 	}
 
-	if err := r.ChunkRepo.Put(ch, configFile); err != nil {
+	if err := r.ConfigRepo.Put(ch, configFile); err != nil {
 		log.Fatalf("failed to put config: %v", err)
 	}
 	return
