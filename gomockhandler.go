@@ -12,13 +12,13 @@ import (
 
 	"golang.org/x/mod/modfile"
 
-	"github.com/sanposhiho/gomockhandler/mockgen"
+	"github.com/sanposhiho/gomockhandler/internal/mockgen"
 
-	"github.com/sanposhiho/gomockhandler/command"
+	"github.com/sanposhiho/gomockhandler/internal/command"
 
-	"github.com/sanposhiho/gomockhandler/mockgen/reflectmode"
-	"github.com/sanposhiho/gomockhandler/mockgen/sourcemode"
-	mockrepo "github.com/sanposhiho/gomockhandler/repository/config"
+	"github.com/sanposhiho/gomockhandler/internal/mockgen/reflectmode"
+	"github.com/sanposhiho/gomockhandler/internal/mockgen/sourcemode"
+	mockrepo "github.com/sanposhiho/gomockhandler/internal/repository/config"
 )
 
 var (

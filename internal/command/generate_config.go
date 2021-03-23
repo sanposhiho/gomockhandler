@@ -5,8 +5,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/sanposhiho/gomockhandler/command/util"
-	"github.com/sanposhiho/gomockhandler/model"
+	"github.com/sanposhiho/gomockhandler/internal/mockgen"
+
+	"github.com/sanposhiho/gomockhandler/internal/model"
+	"github.com/sanposhiho/gomockhandler/internal/util"
 )
 
 // GenerateConfig generate config
@@ -24,16 +26,11 @@ func (r Runner) GenerateConfig() {
 		chunk = model.NewChunk()
 	}
 
-	if err := r.MockgenRunner.Run(); err != nil {
+	if err := mockgen.TestRun(r.MockgenRunner); err != nil {
 		log.Fatalf("failed to run mockgen: %v", err)
 	}
 
 	if r.Args.Destination != "" {
-		// calculate mock's check sum
-		checksum, err := util.MockCheckSum(r.Args.Destination)
-		if err != nil {
-			log.Fatalf("failed to calculate checksum of the mock: %v", err)
-		}
 		currentPath, err := os.Getwd()
 		if err != nil {
 			log.Fatalf("failed to get config: %v", err)
@@ -46,7 +43,7 @@ func (r Runner) GenerateConfig() {
 			r.MockgenRunner.SetSource(sourcePathInPro)
 		}
 		// store into config
-		mock := model.NewMock(destinationPathInPro, checksum, r.MockgenRunner)
+		mock := model.NewMock(destinationPathInPro, [16]byte{}, r.MockgenRunner)
 		chunk.PutMock(mock)
 		if err := r.ChunkRepo.Put(chunk, configPath); err != nil {
 			log.Fatalf("failed to put config: %v", err)

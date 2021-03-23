@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/sanposhiho/gomockhandler/command/util"
-	"github.com/sanposhiho/gomockhandler/model"
+	"github.com/sanposhiho/gomockhandler/internal/model"
+	"github.com/sanposhiho/gomockhandler/internal/util"
 	"golang.org/x/sync/errgroup"
 )
 

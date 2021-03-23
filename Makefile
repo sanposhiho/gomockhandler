@@ -1,6 +1,6 @@
 .PHONY:easyjson
 easyjson:
-	easyjson -all ./model/config.go
+	easyjson -all ./internal/model/config.go
 
 .PHONY:build
 build:

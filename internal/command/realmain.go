@@ -1,8 +1,8 @@
 package command
 
 import (
-	"github.com/sanposhiho/gomockhandler/mockgen"
-	"github.com/sanposhiho/gomockhandler/model"
+	"github.com/sanposhiho/gomockhandler/internal/mockgen"
+	"github.com/sanposhiho/gomockhandler/internal/model"
 )
 
 type ChunkRepo interface {

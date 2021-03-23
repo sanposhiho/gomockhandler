@@ -21,3 +21,8 @@ func MockCheckSum(filePath string) ([16]byte, error) {
 func PathInProject(projectRoot, path string) string {
 	return filepath.Clean(strings.Replace(path, projectRoot, "", 1))
 }
+
+func TmpFilePath(original string) string {
+	d, f := filepath.Split(original)
+	return d + "tmp_" + f
+}

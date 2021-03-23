@@ -6,24 +6,42 @@ import (
 )
 
 type Runner struct {
-	PackageName     string `json:"package_name"`
-	Interfaces      string `json:"interfaces"`
-	Source          string `json:"source"`
-	Destination     string `json:"destination"`
-	Package         string `json:"package"`
-	Imports         string `json:"imports"`
-	AuxFiles        string `json:"aux_files"`
-	BuildFlags      string `json:"build_flags"`
-	MockNames       string `json:"mock_names"`
-	SelfPackage     string `json:"self_package"`
-	CopyrightFile   string `json:"copyright_file"`
-	ExecOnly        string `json:"exec_only"`
-	ProgOnly        bool   `json:"prog_only"`
-	WritePkgComment bool   `json:"write_pkg_comment"`
-	DebugParser     bool   `json:"debug_parser"`
+	PackageName     string `json:"package_name,omitempty"`
+	Interfaces      string `json:"interfaces,omitempty"`
+	Source          string `json:"source,omitempty"`
+	Destination     string `json:"destination,omitempty"`
+	Package         string `json:"package,omitempty"`
+	Imports         string `json:"imports,omitempty"`
+	AuxFiles        string `json:"aux_files,omitempty"`
+	BuildFlags      string `json:"build_flags,omitempty"`
+	MockNames       string `json:"mock_names,omitempty"`
+	SelfPackage     string `json:"self_package,omitempty"`
+	CopyrightFile   string `json:"copyright_file,omitempty"`
+	ExecOnly        string `json:"exec_only,omitempty"`
+	ProgOnly        *bool  `json:"prog_only,omitempty"`
+	WritePkgComment *bool  `json:"write_pkg_comment,omitempty"`
+	DebugParser     *bool  `json:"debug_parser,omitempty"`
 }
 
 func NewRunner(pn, ifs, source, dest, pkg, imp, af, bf, mn, spkg, cf, eo string, po, wpc, dp bool) *Runner {
+	var wpcp *bool
+	if wpc != true {
+		// The default value of wpc is true
+		wpcp = &wpc
+	}
+
+	var dpp *bool
+	if dp != false {
+		// The default value of dp is false
+		dpp = &dp
+	}
+
+	var pop *bool
+	if po != false {
+		// The default value of dp is false
+		pop = &po
+	}
+
 	return &Runner{
 		PackageName:     pn,
 		Interfaces:      ifs,
@@ -37,9 +55,9 @@ func NewRunner(pn, ifs, source, dest, pkg, imp, af, bf, mn, spkg, cf, eo string,
 		SelfPackage:     spkg,
 		CopyrightFile:   cf,
 		ExecOnly:        eo,
-		ProgOnly:        po,
-		WritePkgComment: wpc,
-		DebugParser:     dp,
+		ProgOnly:        pop,
+		WritePkgComment: wpcp,
+		DebugParser:     dpp,
 	}
 }
 
@@ -49,6 +67,14 @@ func (r *Runner) SetSource(new string) {
 
 func (r *Runner) SetDestination(new string) {
 	r.Destination = new
+}
+
+func (r *Runner) GetDestination() string {
+	return r.Destination
+}
+
+func (r *Runner) GetSource() string {
+	return r.Source
 }
 
 func (r *Runner) Run() error {
@@ -88,9 +114,14 @@ func (r *Runner) options() []string {
 	if r.ExecOnly != "" {
 		opts = append(opts, "-exec_only="+r.ExecOnly)
 	}
-	opts = append(opts, "-prog_only="+strconv.FormatBool(r.ProgOnly))
-	opts = append(opts, "-write_package_comment="+strconv.FormatBool(r.WritePkgComment))
-	opts = append(opts, "-debug_parser="+strconv.FormatBool(r.DebugParser))
-
+	if r.WritePkgComment != nil {
+		opts = append(opts, "-write_package_comment="+strconv.FormatBool(*r.WritePkgComment))
+	}
+	if r.DebugParser != nil {
+		opts = append(opts, "-debug_parser="+strconv.FormatBool(*r.DebugParser))
+	}
+	if r.ProgOnly != nil {
+		opts = append(opts, "-prog_only="+strconv.FormatBool(*r.ProgOnly))
+	}
 	return opts
 }

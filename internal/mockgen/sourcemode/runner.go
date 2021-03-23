@@ -6,19 +6,30 @@ import (
 )
 
 type Runner struct {
-	Source          string `json:"source"`
-	Destination     string `json:"destination"`
-	Package         string `json:"package"`
-	Imports         string `json:"imports"`
-	AuxFiles        string `json:"aux_files"`
-	MockNames       string `json:"mock_names"`
-	SelfPackage     string `json:"self_package"`
-	CopyrightFile   string `json:"copyright_file"`
-	WritePkgComment bool   `json:"write_pkg_comment"`
-	DebugParser     bool   `json:"debug_parser"`
+	Source          string `json:"source,omitempty"`
+	Destination     string `json:"destination,omitempty"`
+	Package         string `json:"package,omitempty"`
+	Imports         string `json:"imports,omitempty"`
+	AuxFiles        string `json:"aux_files,omitempty"`
+	MockNames       string `json:"mock_names,omitempty"`
+	SelfPackage     string `json:"self_package,omitempty"`
+	CopyrightFile   string `json:"copyright_file,omitempty"`
+	WritePkgComment *bool  `json:"write_pkg_comment,omitempty"`
+	DebugParser     *bool  `json:"debug_parser,omitempty"`
 }
 
 func NewRunner(source, dest, pkg, imp, af, mn, spkg, cf string, wpc, dp bool) *Runner {
+	var wpcp *bool
+	if wpc != true {
+		// The default value of wpc is true
+		wpcp = &wpc
+	}
+
+	var dpp *bool
+	if dp != false {
+		// The default value of dp is false
+		dpp = &dp
+	}
 	return &Runner{
 		Source:          source,
 		Destination:     dest,
@@ -28,8 +39,8 @@ func NewRunner(source, dest, pkg, imp, af, mn, spkg, cf string, wpc, dp bool) *R
 		MockNames:       mn,
 		SelfPackage:     spkg,
 		CopyrightFile:   cf,
-		WritePkgComment: wpc,
-		DebugParser:     dp,
+		WritePkgComment: wpcp,
+		DebugParser:     dpp,
 	}
 }
 
@@ -39,6 +50,14 @@ func (r *Runner) SetSource(new string) {
 
 func (r *Runner) SetDestination(new string) {
 	r.Destination = new
+}
+
+func (r *Runner) GetDestination() string {
+	return r.Destination
+}
+
+func (r *Runner) GetSource() string {
+	return r.Source
 }
 
 func (r *Runner) Run() error {
@@ -71,8 +90,12 @@ func (r *Runner) options() []string {
 	if r.CopyrightFile != "" {
 		opts = append(opts, "-copyright_file="+r.CopyrightFile)
 	}
-	opts = append(opts, "-write_package_comment="+strconv.FormatBool(r.WritePkgComment))
-	opts = append(opts, "-debug_parser="+strconv.FormatBool(r.DebugParser))
+	if r.WritePkgComment != nil {
+		opts = append(opts, "-write_package_comment="+strconv.FormatBool(*r.WritePkgComment))
+	}
+	if r.DebugParser != nil {
+		opts = append(opts, "-debug_parser="+strconv.FormatBool(*r.DebugParser))
+	}
 
 	return opts
 }
