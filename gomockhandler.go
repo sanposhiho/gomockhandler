@@ -46,7 +46,7 @@ func main() {
 
 	repo := mockrepo.NewRepository()
 	cmd := command.Runner{
-		ChunkRepo: &repo,
+		ConfigRepo: &repo,
 		Args: command.Args{
 			ConfigPath:      *configPath,
 			Concurrency:     *concurrency,
@@ -87,6 +87,10 @@ func main() {
 }
 
 func prepareMockgenRunner() mockgen.Runner {
+	if *destination == "" {
+		log.Fatal("need -destination option")
+	}
+
 	if *source == "" {
 		// reflect mode
 		if flag.NArg() != 2 {
