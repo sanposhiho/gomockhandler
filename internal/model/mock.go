@@ -1,9 +1,9 @@
 package model
 
 import (
-	"github.com/sanposhiho/gomockhandler/mockgen"
-	"github.com/sanposhiho/gomockhandler/mockgen/reflectmode"
-	"github.com/sanposhiho/gomockhandler/mockgen/sourcemode"
+	"github.com/sanposhiho/gomockhandler/internal/mockgen"
+	"github.com/sanposhiho/gomockhandler/internal/mockgen/reflectmode"
+	"github.com/sanposhiho/gomockhandler/internal/mockgen/sourcemode"
 )
 
 type mode string
@@ -16,7 +16,7 @@ const (
 
 type Mock struct {
 	Destination       string              `json:"destination"`
-	CheckSum          [16]byte            `json:"checksum"`
+	CheckSum          [16]byte            `json:"checksum,omitempty"`
 	Mode              mode                `json:"mode"`
 	ReflectModeRunner *reflectmode.Runner `json:"reflect_mode_runner,omitempty"`
 	SourceModeRunner  *sourcemode.Runner  `json:"source_mode_runner,omitempty"`
@@ -30,9 +30,15 @@ func NewMock(destination string, checksum [16]byte, genrunner mockgen.Runner) Mo
 	} else if srunner != nil {
 		mode = SourceMode
 	}
+
+	var cs [16]byte
+	if checksum != [16]byte{} {
+		cs = checksum
+	}
+
 	return Mock{
 		Destination:       destination,
-		CheckSum:          checksum,
+		CheckSum:          cs,
 		Mode:              mode,
 		ReflectModeRunner: rrunner,
 		SourceModeRunner:  srunner,

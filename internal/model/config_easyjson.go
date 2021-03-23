@@ -7,8 +7,8 @@ import (
 	easyjson "github.com/mailru/easyjson"
 	jlexer "github.com/mailru/easyjson/jlexer"
 	jwriter "github.com/mailru/easyjson/jwriter"
-	reflectmode "github.com/sanposhiho/gomockhandler/mockgen/reflectmode"
-	sourcemode "github.com/sanposhiho/gomockhandler/mockgen/sourcemode"
+	reflectmode "github.com/sanposhiho/gomockhandler/internal/mockgen/reflectmode"
+	sourcemode "github.com/sanposhiho/gomockhandler/internal/mockgen/sourcemode"
 )
 
 // suppress unused package warning
@@ -19,7 +19,7 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerModel(in *jlexer.Lexer, out *Config) {
+func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerInternalModel(in *jlexer.Lexer, out *Config) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -55,7 +55,7 @@ func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerModel(in *jlexer.Lexe
 						if v1 == nil {
 							v1 = new(Mock)
 						}
-						easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerModel1(in, v1)
+						easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerInternalModel1(in, v1)
 					}
 					(out.Mocks)[key] = v1
 					in.WantComma()
@@ -72,7 +72,7 @@ func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerModel(in *jlexer.Lexe
 		in.Consumed()
 	}
 }
-func easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerModel(out *jwriter.Writer, in Config) {
+func easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerInternalModel(out *jwriter.Writer, in Config) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -95,7 +95,7 @@ func easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerModel(out *jwriter.Wr
 				if v2Value == nil {
 					out.RawString("null")
 				} else {
-					easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerModel1(out, *v2Value)
+					easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerInternalModel1(out, *v2Value)
 				}
 			}
 			out.RawByte('}')
@@ -107,27 +107,27 @@ func easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerModel(out *jwriter.Wr
 // MarshalJSON supports json.Marshaler interface
 func (v Config) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerModel(&w, v)
+	easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerInternalModel(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Config) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerModel(w, v)
+	easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerInternalModel(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Config) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerModel(&r, v)
+	easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerInternalModel(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Config) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerModel(l, v)
+	easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerInternalModel(l, v)
 }
-func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerModel1(in *jlexer.Lexer, out *Mock) {
+func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerInternalModel1(in *jlexer.Lexer, out *Mock) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -164,7 +164,7 @@ func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerModel1(in *jlexer.Lex
 				if out.ReflectModeRunner == nil {
 					out.ReflectModeRunner = new(reflectmode.Runner)
 				}
-				easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerMockgenReflectmode(in, out.ReflectModeRunner)
+				easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerInternalMockgenReflectmode(in, out.ReflectModeRunner)
 			}
 		case "source_mode_runner":
 			if in.IsNull() {
@@ -174,7 +174,7 @@ func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerModel1(in *jlexer.Lex
 				if out.SourceModeRunner == nil {
 					out.SourceModeRunner = new(sourcemode.Runner)
 				}
-				easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerMockgenSourcemode(in, out.SourceModeRunner)
+				easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerInternalMockgenSourcemode(in, out.SourceModeRunner)
 			}
 		default:
 			in.SkipRecursive()
@@ -186,7 +186,7 @@ func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerModel1(in *jlexer.Lex
 		in.Consumed()
 	}
 }
-func easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerModel1(out *jwriter.Writer, in Mock) {
+func easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerInternalModel1(out *jwriter.Writer, in Mock) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -195,7 +195,7 @@ func easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerModel1(out *jwriter.W
 		out.RawString(prefix[1:])
 		out.String(string(in.Destination))
 	}
-	{
+	if true {
 		const prefix string = ",\"checksum\":"
 		out.RawString(prefix)
 		out.Base64Bytes(in.CheckSum[:])
@@ -208,16 +208,16 @@ func easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerModel1(out *jwriter.W
 	if in.ReflectModeRunner != nil {
 		const prefix string = ",\"reflect_mode_runner\":"
 		out.RawString(prefix)
-		easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerMockgenReflectmode(out, *in.ReflectModeRunner)
+		easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerInternalMockgenReflectmode(out, *in.ReflectModeRunner)
 	}
 	if in.SourceModeRunner != nil {
 		const prefix string = ",\"source_mode_runner\":"
 		out.RawString(prefix)
-		easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerMockgenSourcemode(out, *in.SourceModeRunner)
+		easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerInternalMockgenSourcemode(out, *in.SourceModeRunner)
 	}
 	out.RawByte('}')
 }
-func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerMockgenSourcemode(in *jlexer.Lexer, out *sourcemode.Runner) {
+func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerInternalMockgenSourcemode(in *jlexer.Lexer, out *sourcemode.Runner) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -253,9 +253,25 @@ func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerMockgenSourcemode(in 
 		case "copyright_file":
 			out.CopyrightFile = string(in.String())
 		case "write_pkg_comment":
-			out.WritePkgComment = bool(in.Bool())
+			if in.IsNull() {
+				in.Skip()
+				out.WritePkgComment = nil
+			} else {
+				if out.WritePkgComment == nil {
+					out.WritePkgComment = new(bool)
+				}
+				*out.WritePkgComment = bool(in.Bool())
+			}
 		case "debug_parser":
-			out.DebugParser = bool(in.Bool())
+			if in.IsNull() {
+				in.Skip()
+				out.DebugParser = nil
+			} else {
+				if out.DebugParser == nil {
+					out.DebugParser = new(bool)
+				}
+				*out.DebugParser = bool(in.Bool())
+			}
 		default:
 			in.SkipRecursive()
 		}
@@ -266,63 +282,109 @@ func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerMockgenSourcemode(in 
 		in.Consumed()
 	}
 }
-func easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerMockgenSourcemode(out *jwriter.Writer, in sourcemode.Runner) {
+func easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerInternalMockgenSourcemode(out *jwriter.Writer, in sourcemode.Runner) {
 	out.RawByte('{')
 	first := true
 	_ = first
-	{
+	if in.Source != "" {
 		const prefix string = ",\"source\":"
+		first = false
 		out.RawString(prefix[1:])
 		out.String(string(in.Source))
 	}
-	{
+	if in.Destination != "" {
 		const prefix string = ",\"destination\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.Destination))
 	}
-	{
+	if in.Package != "" {
 		const prefix string = ",\"package\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.Package))
 	}
-	{
+	if in.Imports != "" {
 		const prefix string = ",\"imports\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.Imports))
 	}
-	{
+	if in.AuxFiles != "" {
 		const prefix string = ",\"aux_files\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.AuxFiles))
 	}
-	{
+	if in.MockNames != "" {
 		const prefix string = ",\"mock_names\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.MockNames))
 	}
-	{
+	if in.SelfPackage != "" {
 		const prefix string = ",\"self_package\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.SelfPackage))
 	}
-	{
+	if in.CopyrightFile != "" {
 		const prefix string = ",\"copyright_file\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.CopyrightFile))
 	}
-	{
+	if in.WritePkgComment != nil {
 		const prefix string = ",\"write_pkg_comment\":"
-		out.RawString(prefix)
-		out.Bool(bool(in.WritePkgComment))
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.Bool(bool(*in.WritePkgComment))
 	}
-	{
+	if in.DebugParser != nil {
 		const prefix string = ",\"debug_parser\":"
-		out.RawString(prefix)
-		out.Bool(bool(in.DebugParser))
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.Bool(bool(*in.DebugParser))
 	}
 	out.RawByte('}')
 }
-func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerMockgenReflectmode(in *jlexer.Lexer, out *reflectmode.Runner) {
+func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerInternalMockgenReflectmode(in *jlexer.Lexer, out *reflectmode.Runner) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -366,11 +428,35 @@ func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerMockgenReflectmode(in
 		case "exec_only":
 			out.ExecOnly = string(in.String())
 		case "prog_only":
-			out.ProgOnly = bool(in.Bool())
+			if in.IsNull() {
+				in.Skip()
+				out.ProgOnly = nil
+			} else {
+				if out.ProgOnly == nil {
+					out.ProgOnly = new(bool)
+				}
+				*out.ProgOnly = bool(in.Bool())
+			}
 		case "write_pkg_comment":
-			out.WritePkgComment = bool(in.Bool())
+			if in.IsNull() {
+				in.Skip()
+				out.WritePkgComment = nil
+			} else {
+				if out.WritePkgComment == nil {
+					out.WritePkgComment = new(bool)
+				}
+				*out.WritePkgComment = bool(in.Bool())
+			}
 		case "debug_parser":
-			out.DebugParser = bool(in.Bool())
+			if in.IsNull() {
+				in.Skip()
+				out.DebugParser = nil
+			} else {
+				if out.DebugParser == nil {
+					out.DebugParser = new(bool)
+				}
+				*out.DebugParser = bool(in.Bool())
+			}
 		default:
 			in.SkipRecursive()
 		}
@@ -381,84 +467,155 @@ func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerMockgenReflectmode(in
 		in.Consumed()
 	}
 }
-func easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerMockgenReflectmode(out *jwriter.Writer, in reflectmode.Runner) {
+func easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerInternalMockgenReflectmode(out *jwriter.Writer, in reflectmode.Runner) {
 	out.RawByte('{')
 	first := true
 	_ = first
-	{
+	if in.PackageName != "" {
 		const prefix string = ",\"package_name\":"
+		first = false
 		out.RawString(prefix[1:])
 		out.String(string(in.PackageName))
 	}
-	{
+	if in.Interfaces != "" {
 		const prefix string = ",\"interfaces\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.Interfaces))
 	}
-	{
+	if in.Source != "" {
 		const prefix string = ",\"source\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.Source))
 	}
-	{
+	if in.Destination != "" {
 		const prefix string = ",\"destination\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.Destination))
 	}
-	{
+	if in.Package != "" {
 		const prefix string = ",\"package\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.Package))
 	}
-	{
+	if in.Imports != "" {
 		const prefix string = ",\"imports\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.Imports))
 	}
-	{
+	if in.AuxFiles != "" {
 		const prefix string = ",\"aux_files\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.AuxFiles))
 	}
-	{
+	if in.BuildFlags != "" {
 		const prefix string = ",\"build_flags\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.BuildFlags))
 	}
-	{
+	if in.MockNames != "" {
 		const prefix string = ",\"mock_names\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.MockNames))
 	}
-	{
+	if in.SelfPackage != "" {
 		const prefix string = ",\"self_package\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.SelfPackage))
 	}
-	{
+	if in.CopyrightFile != "" {
 		const prefix string = ",\"copyright_file\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.CopyrightFile))
 	}
-	{
+	if in.ExecOnly != "" {
 		const prefix string = ",\"exec_only\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.ExecOnly))
 	}
-	{
+	if in.ProgOnly != nil {
 		const prefix string = ",\"prog_only\":"
-		out.RawString(prefix)
-		out.Bool(bool(in.ProgOnly))
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.Bool(bool(*in.ProgOnly))
 	}
-	{
+	if in.WritePkgComment != nil {
 		const prefix string = ",\"write_pkg_comment\":"
-		out.RawString(prefix)
-		out.Bool(bool(in.WritePkgComment))
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.Bool(bool(*in.WritePkgComment))
 	}
-	{
+	if in.DebugParser != nil {
 		const prefix string = ",\"debug_parser\":"
-		out.RawString(prefix)
-		out.Bool(bool(in.DebugParser))
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		out.Bool(bool(*in.DebugParser))
 	}
 	out.RawByte('}')
 }

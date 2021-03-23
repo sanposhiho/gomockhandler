@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/mailru/easyjson"
-	"github.com/sanposhiho/gomockhandler/model"
+	"github.com/sanposhiho/gomockhandler/internal/model"
 )
 
 type Repository struct{}
