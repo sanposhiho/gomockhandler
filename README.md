@@ -68,7 +68,9 @@ However, you don't need to generate/edit the config directly, it can be generate
 
 ### configuring a new mock
 
-You can configure a new mock to be generated with CLI. If a config file does not exist, it will be created.
+You can configure a new mock to be generated with CLI. It will also check if mockgen will run correctly with that option.
+
+If a config file does not exist, a config file will be created.
 
 `mockgen` has two modes of operation: source and reflect, and gomockhandler support both.
 
