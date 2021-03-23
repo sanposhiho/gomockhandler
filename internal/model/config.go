@@ -12,8 +12,8 @@ func NewChunk() *Config {
 	return &Config{Mocks: map[string]*Mock{}}
 }
 
-func (c *Config) PutMock(mock Mock) {
-	c.Mocks[mock.Destination] = &mock
+func (c *Config) PutMock(destination string, mock Mock) {
+	c.Mocks[destination] = &mock
 }
 
 func (c *Config) DeleteMock(dest string) {

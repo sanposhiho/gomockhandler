@@ -59,8 +59,8 @@ func (r Runner) GenerateConfig() {
 	}
 
 	// store into config
-	mock := model.NewMock(destinationPathInPro, checksum, r.MockgenRunner)
-	chunk.PutMock(mock)
+	mock := model.NewMock(checksum, r.MockgenRunner)
+	chunk.PutMock(r.MockgenRunner.GetDestination(), mock)
 	if err := r.ConfigRepo.Put(chunk, configFile); err != nil {
 		log.Fatalf("failed to put config: %v", err)
 	}

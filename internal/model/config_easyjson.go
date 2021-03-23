@@ -146,8 +146,6 @@ func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerInternalModel1(in *jl
 			continue
 		}
 		switch key {
-		case "destination":
-			out.Destination = string(in.String())
 		case "checksum":
 			if in.IsNull() {
 				in.Skip()
@@ -190,19 +188,20 @@ func easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerInternalModel1(out *j
 	out.RawByte('{')
 	first := true
 	_ = first
-	{
-		const prefix string = ",\"destination\":"
-		out.RawString(prefix[1:])
-		out.String(string(in.Destination))
-	}
 	if true {
 		const prefix string = ",\"checksum\":"
-		out.RawString(prefix)
+		first = false
+		out.RawString(prefix[1:])
 		out.Base64Bytes(in.CheckSum[:])
 	}
 	{
 		const prefix string = ",\"mode\":"
-		out.RawString(prefix)
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
 		out.String(string(in.Mode))
 	}
 	if in.ReflectModeRunner != nil {
