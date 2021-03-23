@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 
 	"github.com/sanposhiho/gomockhandler/internal/model"
 	"github.com/sanposhiho/gomockhandler/internal/util"
@@ -14,6 +16,15 @@ func (r Runner) Mockgen() {
 	ch, err := r.ChunkRepo.Get(r.Args.ConfigPath)
 	if err != nil {
 		log.Fatalf("failed to get config: %v", err)
+	}
+
+	configPath, err := filepath.Abs(r.Args.ConfigPath)
+	if err != nil {
+		log.Fatalf("failed to get absolute project root: %v", err)
+	}
+	configDir, configFile := filepath.Split(configPath)
+	if err := os.Chdir(configDir); err != nil {
+		log.Fatalf("failed to change dir: %v", err)
 	}
 
 	g, _ := errgroup.WithContext(context.Background())
@@ -49,7 +60,7 @@ func (r Runner) Mockgen() {
 		log.Fatalf("failed to run: %v", err.Error())
 	}
 
-	if err := r.ChunkRepo.Put(ch, r.Args.ConfigPath); err != nil {
+	if err := r.ChunkRepo.Put(ch, configFile); err != nil {
 		log.Fatalf("failed to put config: %v", err)
 	}
 	return

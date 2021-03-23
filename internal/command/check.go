@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 
 	"github.com/sanposhiho/gomockhandler/internal/mockgen"
 
@@ -16,6 +18,15 @@ func (r Runner) Check() {
 	ch, err := r.ChunkRepo.Get(r.Args.ConfigPath)
 	if err != nil {
 		log.Fatalf("failed to get config: %v", err)
+	}
+
+	configPath, err := filepath.Abs(r.Args.ConfigPath)
+	if err != nil {
+		log.Fatalf("failed to get absolute project root: %v", err)
+	}
+	configDir, _ := filepath.Split(configPath)
+	if err := os.Chdir(configDir); err != nil {
+		log.Fatalf("failed to change dir: %v", err)
 	}
 
 	isFail := false
