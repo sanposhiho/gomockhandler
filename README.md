@@ -59,6 +59,12 @@ go install github.com/sanposhiho/gomockhandler
 - generate mocks from config
 - check if mocks are up-to-date
 
+```
+-config string
+  The path to config file.
+  The default value is "./gomockhandler.json"
+```
+
 ## configuring
 
 You need a config for `gomockhandler`. 
@@ -69,7 +75,9 @@ However, you don't need to generate/edit the config directly, it can be generate
 
 You can configure a new mock to be generated with CLI. It will also check if mockgen will run correctly with that option.
 
-If a config file does not exist, a config file will be created.
+If a config file does not exist, a config file will be created. 
+
+(It is RECOMMENDED to name the config file `gomockhandler.json`, and place it in a location where the gomockhandler is likely to be run frequently.)
 
 `mockgen` has two modes of operation: source and reflect, and gomockhandler support both.
 
@@ -77,12 +85,12 @@ See [golang/mock#running-mockgen](https://github.com/golang/mock#running-mockgen
 
 Source mode:
 ```
-gomockhandler -config=/path/to/config.json -source=foo.go [other options]
+gomockhandler -config=/path/to/gomockhandler.json -source=foo.go -destination=./mock/ [other mockgen options]
 ```
 
 Reflect mode:
 ```
-gomockhandler -config=/path/to/config.json [options] database/sql/driver Conn,Driver
+gomockhandler -config=/path/to/gomockhandler.json -destination=./mock/ [other mockgen options] database/sql/driver Conn,Driver
 ```
 
 ---
@@ -96,10 +104,10 @@ mockgen -source=foo.go -destination=../mock/
 ```
 
 The following command will add the information of the mock you want to generate to the configuration.
-As you can see, you just need to add the option `config`.
+As you can see, you just need to think about the option `config`. (The default value is `./gomockhandler.json`)
 
 ```
-gomockhandler -config=/path/to/config.json -source=foo.go -destination=../mock/
+gomockhandler -config=/path/to/gomockhandler.json -source=foo.go -destination=../mock/
 ```
 
 ---
@@ -108,11 +116,11 @@ gomockhandler is designed to make it easy to switch from managing mocks with `go
 
 If you use `go:generate` to execute mockgen now, you can generate the config file by rewriting `go:generate` comment a little bit.
 
-Replace from `mockgen` to `gomockhandler -config=/path/to/config.json` in all `go:generate` comments, and run `go generate ./...` in your project. And then, 
+Replace from `mockgen` to `gomockhandler -config=/path/to/gomockhandler.json` in all `go:generate` comments, and run `go generate ./...` in your project. And then, 
 
 ```
 - //go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAG
-+ //go:generate gomockhandler -config=/path/to/config.json -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAG
++ //go:generate gomockhandler -config=/path/to/gomockhandler.json -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAG
 ```
 
 After generating the config, your `go:generate` comments are no longer needed. You've been released from a slow-mockgen with `go generate`!
@@ -124,7 +132,7 @@ Let's delete all `go:generate` comments for mockgen in your project.
 You can remove the mocks to be generated from the config.
 
 ```
-gomockhandler -config=/path/to/config.json -destination=./mock/user.go deletemock 
+gomockhandler -config=/path/to/gomockhandler.json -destination=./mock/user.go deletemock 
 ```
 
 ## generate mock
@@ -132,7 +140,7 @@ gomockhandler -config=/path/to/config.json -destination=./mock/user.go deletemoc
 You can generate all mocks from config.
 
 ```
-gomockhandler -config=/path/to/config.json mockgen
+gomockhandler -config=/path/to/gomockhandler.json mockgen
 ```
 
 ## check if mock is up-to-date
@@ -142,7 +150,7 @@ You can check if the mock is generated based on the latest interface.
 It is useful for ci.
 
 ```
-gomockhandler -config=/path/to/config.json check
+gomockhandler -config=/path/to/gomockhandler.json check
 ```
 If some mocks are not up to date, you can see the error and `gomockhandler` will exit with exit-code 1 
 
