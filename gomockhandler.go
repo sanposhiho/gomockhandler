@@ -22,7 +22,7 @@ import (
 )
 
 var (
-	configPath = flag.String("config", "", "(required) The path to config file.")
+	configPath = flag.String("config", "gomockhandler.json", "The path to config file.")
 
 	// flags for mockgen
 	source          = flag.String("source", "", "(source mode) Input Go source file; enables source mode.")
@@ -62,10 +62,6 @@ func main() {
 			ProgOnly:        *progOnly,
 			DebugParser:     *debugParser,
 		},
-	}
-
-	if *configPath == "" {
-		log.Fatal("Need -config option")
 	}
 
 	var cmdFunc func()
