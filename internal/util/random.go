@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func MockCheckSum(filePath string) ([16]byte, error) {
+func CalculateCheckSum(filePath string) ([16]byte, error) {
 	file, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return [16]byte{}, fmt.Errorf("failed read file. filename: %s, err: %w", filePath)
