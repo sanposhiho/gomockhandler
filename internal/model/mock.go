@@ -15,14 +15,13 @@ const (
 )
 
 type Mock struct {
-	MockCheckSum      [16]byte            `json:"mock_checksum,omitempty"`
-	SourceChecksum    [16]byte            `json:"source_checksum,omitempty"`
+	CheckSum          [16]byte            `json:"checksum,omitempty"`
 	Mode              mode                `json:"mode"`
 	ReflectModeRunner *reflectmode.Runner `json:"reflect_mode_runner,omitempty"`
 	SourceModeRunner  *sourcemode.Runner  `json:"source_mode_runner,omitempty"`
 }
 
-func NewMock(mockChecksum, sourceChecksum [16]byte, genrunner mockgen.Runner) Mock {
+func NewMock(checksum [16]byte, genrunner mockgen.Runner) Mock {
 	rrunner, srunner := convertMockgenRunner(genrunner)
 	mode := Unknown
 	if rrunner != nil {
@@ -31,9 +30,13 @@ func NewMock(mockChecksum, sourceChecksum [16]byte, genrunner mockgen.Runner) Mo
 		mode = SourceMode
 	}
 
+	var cs [16]byte
+	if checksum != [16]byte{} {
+		cs = checksum
+	}
+
 	return Mock{
-		MockCheckSum:      mockChecksum,
-		SourceChecksum:    sourceChecksum,
+		CheckSum:          cs,
 		Mode:              mode,
 		ReflectModeRunner: rrunner,
 		SourceModeRunner:  srunner,

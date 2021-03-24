@@ -146,17 +146,11 @@ func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerInternalModel1(in *jl
 			continue
 		}
 		switch key {
-		case "mock_checksum":
+		case "checksum":
 			if in.IsNull() {
 				in.Skip()
 			} else {
-				copy(out.MockCheckSum[:], in.Bytes())
-			}
-		case "source_checksum":
-			if in.IsNull() {
-				in.Skip()
-			} else {
-				copy(out.SourceChecksum[:], in.Bytes())
+				copy(out.CheckSum[:], in.Bytes())
 			}
 		case "mode":
 			out.Mode = mode(in.String())
@@ -195,20 +189,10 @@ func easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerInternalModel1(out *j
 	first := true
 	_ = first
 	if true {
-		const prefix string = ",\"mock_checksum\":"
+		const prefix string = ",\"checksum\":"
 		first = false
 		out.RawString(prefix[1:])
-		out.Base64Bytes(in.MockCheckSum[:])
-	}
-	if true {
-		const prefix string = ",\"source_checksum\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
-		out.Base64Bytes(in.SourceChecksum[:])
+		out.Base64Bytes(in.CheckSum[:])
 	}
 	{
 		const prefix string = ",\"mode\":"

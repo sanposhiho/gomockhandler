@@ -34,20 +34,11 @@ func (r Runner) Mockgen() {
 		m := m
 		g.Go(func() error {
 			var runner mockgen.Runner
-			var sourceChecksum [16]byte
 			switch m.Mode {
 			case model.ReflectMode:
 				runner = m.ReflectModeRunner
 			case model.SourceMode:
 				runner = m.SourceModeRunner
-				sourceChecksum, err = mockgen.SourceChecksum(runner)
-				if err != nil {
-					log.Fatalf("failed to calculate checksum of the source: %v", err)
-				}
-				if sourceChecksum == m.SourceChecksum {
-					// source file is not updated
-					return nil
-				}
 			default:
 				log.Printf("[WARN] unknown mock detected\n")
 				return nil
@@ -57,13 +48,12 @@ func (r Runner) Mockgen() {
 				return fmt.Errorf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, r.MockgenRunner)
 			}
 
-			checksum, err := util.CalculateCheckSum(runner.GetDestination())
+			checksum, err := util.MockCheckSum(runner.GetDestination())
 			if err != nil {
 				return fmt.Errorf("calculate checksum of the mock: %v", err)
 			}
 
-			m.MockCheckSum = checksum
-			m.SourceChecksum = sourceChecksum
+			m.CheckSum = checksum
 			return nil
 		})
 	}
