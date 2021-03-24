@@ -67,7 +67,7 @@ func (r Runner) Check() {
 	}
 	err = g.Wait()
 	if err != nil {
-		log.Fatalf("failed to run: %v", err.Error())
+		log.Fatalf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, r.MockgenRunner)
 	}
 	if isFail {
 		log.Fatal("mocks is not up-to-date")

@@ -26,7 +26,7 @@ func Checksum(r Runner) ([16]byte, error) {
 	defer r.SetDestination(d)
 
 	if err := r.Run(); err != nil {
-		return [16]byte{}, fmt.Errorf("run mockgen: %w", err)
+		return [16]byte{}, fmt.Errorf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, r)
 	}
 
 	checksum, err := util.MockCheckSum(tmpFile)

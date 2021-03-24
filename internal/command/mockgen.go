@@ -45,7 +45,7 @@ func (r Runner) Mockgen() {
 			}
 			err = runner.Run()
 			if err != nil {
-				return fmt.Errorf("run mockgen: %v", err)
+				return fmt.Errorf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, r.MockgenRunner)
 			}
 
 			checksum, err := util.MockCheckSum(runner.GetDestination())

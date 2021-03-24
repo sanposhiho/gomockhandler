@@ -60,6 +60,10 @@ func (r *Runner) GetSource() string {
 	return r.Source
 }
 
+func (r *Runner) String() string {
+	return exec.Command("mockgen", r.options()...).String()
+}
+
 func (r *Runner) Run() error {
 	return exec.Command("mockgen", r.options()...).Run()
 }

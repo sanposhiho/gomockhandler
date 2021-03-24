@@ -77,6 +77,11 @@ func (r *Runner) GetSource() string {
 	return r.Source
 }
 
+func (r *Runner) String() string {
+	params := append(r.options(), []string{r.PackageName, r.Interfaces}...)
+	return exec.Command("mockgen", params...).String()
+}
+
 func (r *Runner) Run() error {
 	params := append(r.options(), []string{r.PackageName, r.Interfaces}...)
 	return exec.Command("mockgen", params...).Run()

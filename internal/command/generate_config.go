@@ -49,7 +49,7 @@ func (r Runner) GenerateConfig() {
 	}
 
 	if err := r.MockgenRunner.Run(); err != nil {
-		log.Fatalf("failed to run mockgen: %v", err)
+		log.Fatalf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, r.MockgenRunner)
 	}
 
 	// calculate mock's check sum
