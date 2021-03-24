@@ -8,10 +8,9 @@ gomockhandler is handler of [golang/mock](https://github.com/golang/mock), as th
 
 With `gomockhandler`, 
 
-- You can generate mocks more quickly :rocket:.
-- You can check if mock is up-to-date :sparkles:.
-- You can manage your mocks in one config file :books:.
-- You can generate/edit the config of gomockhandler with CLI :wrench:.
+- You can generate mocks **in parallel** :rocket:.
+- You can check if mock is **up-to-date** :sparkles:.
+- You can manage your mocks in **one config file** :books:.
 
 Here is some example of the mock being generated in half the time with `gomockhandler`. (I ran `mockgen` to generate same mocks in `go generate ./...`)
 
@@ -29,7 +28,7 @@ Some of you may often manage your mocks with `go generate` like below.
 //go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAG
 ```
 
-But, it will take long time to execute `go generate ./...` for the project has many files. 
+But, it will take long time to generate a log of mocks with `go generate ./...`, because `go generate` executes mockgen one by one. 
 
 And we cannot easily check if mock is up-to-date.
 
@@ -133,10 +132,8 @@ gomockhandler -config=/path/to/config.json -destination=./mock/user.go deletemoc
 You can generate all mocks from config.
 
 ```
-gomockhandler -config=/path/to/config.json -concurrency=10 mockgen
+gomockhandler -config=/path/to/config.json mockgen
 ```
-
-As you can see, by specifying `concurrency`, you can generate mocks in parallel.
 
 ## check if mock is up-to-date
 
@@ -145,7 +142,7 @@ You can check if the mock is generated based on the latest interface.
 It is useful for ci.
 
 ```
-gomockhandler -config=/path/to/config.json -concurrency=10 check
+gomockhandler -config=/path/to/config.json check
 ```
 If some mocks are not up to date, you can see the error and `gomockhandler` will exit with exit-code 1 
 
