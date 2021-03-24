@@ -3,6 +3,7 @@ package command
 import (
 	"context"
 	"fmt"
+	"github.com/sanposhiho/gomockhandler/internal/mockgen"
 	"log"
 	"os"
 	"path/filepath"
@@ -27,27 +28,30 @@ func (r Runner) Mockgen() {
 		log.Fatalf("failed to change dir: %v", err)
 	}
 
+	sem := make(chan struct{}, r.Args.Concurrency)
 	g, _ := errgroup.WithContext(context.Background())
 	for _, m := range ch.Mocks {
 		m := m
+		sem <- struct{}{}
+
 		g.Go(func() error {
-			var destination string
+			defer func() { <-sem }()
+			var runner mockgen.Runner
 			switch m.Mode {
-			case model.Unknown:
+			case model.ReflectMode:
+				runner = m.ReflectModeRunner
+			case model.SourceMode:
+				runner = m.SourceModeRunner
+			default:
 				log.Printf("[WARN] unknown mock detected\n")
 				return nil
-			case model.ReflectMode:
-				err = m.ReflectModeRunner.Run()
-				destination = m.ReflectModeRunner.Destination
-			case model.SourceMode:
-				err = m.SourceModeRunner.Run()
-				destination = m.SourceModeRunner.Destination
 			}
+			err = runner.Run()
 			if err != nil {
 				return fmt.Errorf("run mockgen: %v", err)
 			}
 
-			checksum, err := util.MockCheckSum(destination)
+			checksum, err := util.MockCheckSum(runner.GetDestination())
 			if err != nil {
 				return fmt.Errorf("calculate checksum of the mock: %v", err)
 			}
@@ -56,7 +60,9 @@ func (r Runner) Mockgen() {
 			return nil
 		})
 	}
-	if err := g.Wait(); err != nil {
+	err = g.Wait()
+	close(sem)
+	if err != nil {
 		log.Fatalf("failed to run: %v", err.Error())
 	}
 
