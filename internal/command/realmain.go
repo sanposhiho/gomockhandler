@@ -18,8 +18,7 @@ type Runner struct {
 }
 
 type Args struct {
-	ConfigPath  string
-	Concurrency int
+	ConfigPath string
 
 	Source          string
 	Destination     string
