@@ -3,10 +3,11 @@ package command
 import (
 	"context"
 	"fmt"
-	"github.com/sanposhiho/gomockhandler/internal/mockgen"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/sanposhiho/gomockhandler/internal/mockgen"
 
 	"github.com/sanposhiho/gomockhandler/internal/model"
 	"github.com/sanposhiho/gomockhandler/internal/util"
@@ -28,14 +29,10 @@ func (r Runner) Mockgen() {
 		log.Fatalf("failed to change dir: %v", err)
 	}
 
-	sem := make(chan struct{}, r.Args.Concurrency)
 	g, _ := errgroup.WithContext(context.Background())
 	for _, m := range ch.Mocks {
 		m := m
-		sem <- struct{}{}
-
 		g.Go(func() error {
-			defer func() { <-sem }()
 			var runner mockgen.Runner
 			switch m.Mode {
 			case model.ReflectMode:
@@ -61,7 +58,6 @@ func (r Runner) Mockgen() {
 		})
 	}
 	err = g.Wait()
-	close(sem)
 	if err != nil {
 		log.Fatalf("failed to run: %v", err.Error())
 	}

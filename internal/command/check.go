@@ -30,16 +30,12 @@ func (r Runner) Check() {
 	}
 
 	isFail := false
-	sem := make(chan struct{}, r.Args.Concurrency)
 	g, _ := errgroup.WithContext(context.Background())
 	for _, m := range ch.Mocks {
 		m := m
-		sem <- struct{}{}
 
 		var runner mockgen.Runner
 		g.Go(func() error {
-			defer func() { <-sem }()
-
 			switch m.Mode {
 			case model.ReflectMode:
 				runner = m.ReflectModeRunner
@@ -70,7 +66,6 @@ func (r Runner) Check() {
 		})
 	}
 	err = g.Wait()
-	close(sem)
 	if err != nil {
 		log.Fatalf("failed to run: %v", err.Error())
 	}
