@@ -14,11 +14,9 @@ With `gomockhandler`,
 
 Here is some example of the mock being generated in half the time with `gomockhandler`. (I ran `mockgen` to generate same mocks in `go generate ./...`)
 
+<img width="509" alt="Screen Shot 2021-03-25 at 11 55 54" src="https://user-images.githubusercontent.com/44139130/112411968-1050b180-8d61-11eb-8321-d9a890de292a.png">
 
-<img width="825" alt="Screen Shot 2021-03-08 at 23 28 46" src="https://user-images.githubusercontent.com/44139130/110334403-1444ba00-8066-11eb-9377-0d8c98a84c9e.png">
-
-![Screen Shot 2021-03-09 at 12 07 03](https://user-images.githubusercontent.com/44139130/110413121-ac778900-80d0-11eb-89c1-73b7e80c11c9.png)
-
+<img width="529" alt="Screen Shot 2021-03-25 at 11 56 29" src="https://user-images.githubusercontent.com/44139130/112412003-2494ae80-8d61-11eb-8b0f-08098ee6992e.png">
 
 ## Background
 
