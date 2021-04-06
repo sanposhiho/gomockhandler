@@ -72,5 +72,6 @@ func (r Runner) Check() {
 	if isFail {
 		log.Fatal("mocks is not up-to-date")
 	}
+	log.Print("mocks is up-to-date ✨")
 	return
 }
