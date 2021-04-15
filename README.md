@@ -45,8 +45,8 @@ GO111MODULE=on go get github.com/sanposhiho/gomockhandler
 ```
 ### Go 1.16+
 ```
-go install github.com/golang/mock/mockgen
-go install github.com/sanposhiho/gomockhandler
+go install github.com/golang/mock/mockgen@latest
+go install github.com/sanposhiho/gomockhandler@latest
 ```
 
 ## How to use
