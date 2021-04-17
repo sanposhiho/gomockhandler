@@ -55,10 +55,16 @@ go install github.com/sanposhiho/gomockhandler@latest
 - generate mocks from config
 - check if mocks are up-to-date
 
+These are the options for using the gomockhandler.
+
 ```
 -config string
   The path to config file.
   The default value is "./gomockhandler.json"
+  
+-f bool
+  If true, it will also generate mocks whose source has not been updated.
+  The default value is false.
 ```
 
 ## configuring
@@ -72,7 +78,6 @@ However, you don't need to generate/edit the config directly, it can be generate
 You can configure a new mock to be generated with CLI. It will also check if mockgen will run correctly with that option.
 
 If a config file does not exist, a config file will be created.
-
 
 `mockgen` has two modes of operation: source and reflect, and gomockhandler support both.
 
