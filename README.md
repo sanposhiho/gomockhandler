@@ -8,7 +8,7 @@ gomockhandler is handler of [golang/mock](https://github.com/golang/mock), as th
 
 With `gomockhandler`,
 
-- You can generate mocks **in parallel** :rocket:.
+- You can generate mocks **faster** :rocket:.
 - You can check if mock is **up-to-date** :sparkles:.
 - You can manage your mocks in **one config file** :books:.
 
@@ -26,9 +26,7 @@ Some of you may often manage your mocks with `go generate` like below.
 //go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAG
 ```
 
-But, it will take long time to generate a log of mocks with `go generate ./...`, because `go generate` executes mockgen one by one.
-
-And we cannot easily check if mock is up-to-date.
+But, it will take long time to generate a log of mocks with `go generate ./...`, because `go generate` executes mockgen one by one. And we cannot easily check if mock is up-to-date.
 
 `gomockhandler` is created to solve all of these problems.
 
@@ -75,13 +73,10 @@ You can configure a new mock to be generated with CLI. It will also check if moc
 
 If a config file does not exist, a config file will be created.
 
-It is RECOMMENDED to name the config file `gomockhandler.json`, and place it in a location where the gomockhandler is likely to be run frequently.
 
 `mockgen` has two modes of operation: source and reflect, and gomockhandler support both.
 
 See [golang/mock#running-mockgen](https://github.com/golang/mock#running-mockgen) for more information about the two modes and mockgen options.
-
-If there is no major reason, it is RECOMMENDED to use **Source Mode**, which is much faster because the gomockhandler will skip processing if the source file has not been changed.
 
 Source mode:
 ```
@@ -126,6 +121,11 @@ Replace from `mockgen` to `gomockhandler -config=/path/to/gomockhandler.json` in
 After generating the config, your `go:generate` comments are no longer needed. You've been released from a slow-mockgen with `go generate`!
 
 Let's delete all `go:generate` comments for mockgen in your project.
+
+### Recommendations
+
+- name the config file `gomockhandler.json`, and place it in a location where the gomockhandler is likely to be run frequently.
+- use **Source Mode**, if there is no great reason to use Reflect mode., which is much faster because the gomockhandler will skip processing if the source file has not been changed.
 
 ### delete mocks to be generated from config
 
