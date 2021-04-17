@@ -55,10 +55,16 @@ go install github.com/sanposhiho/gomockhandler@latest
 - generate mocks from config
 - check if mocks are up-to-date
 
+These are the options for using the gomockhandler.
+
 ```
 -config string
   The path to config file.
   The default value is "./gomockhandler.json"
+  
+-f bool
+  If true, it will also generate mocks whose source has not been updated.
+  The default value is false.
 ```
 
 ## configuring
@@ -73,12 +79,9 @@ You can configure a new mock to be generated with CLI. It will also check if moc
 
 If a config file does not exist, a config file will be created.
 
-
 `mockgen` has two modes of operation: source and reflect, and gomockhandler support both.
 
 See [golang/mock#running-mockgen](https://github.com/golang/mock#running-mockgen) for more information about the two modes and mockgen options.
-
-If there is no major reason, it is RECOMMENDED to use **Source Mode**, which is much faster because the gomockhandler will skip processing if the source file has not been changed.
 
 Source mode:
 ```
