@@ -46,7 +46,7 @@ func (r Runner) Check() {
 					log.Fatalf("failed to calculate checksum of the source: %v", err)
 				}
 				if sourceChecksum == m.SourceChecksum {
-					// source file is not updated
+					// source file is not updated, so the mock is up-to-date.
 					return nil
 				}
 			default:
