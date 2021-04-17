@@ -41,6 +41,14 @@ func (r Runner) Check() {
 				runner = m.ReflectModeRunner
 			case model.SourceMode:
 				runner = m.SourceModeRunner
+				sourceChecksum, err := mockgen.SourceChecksum(runner)
+				if err != nil {
+					log.Fatalf("failed to calculate checksum of the source: %v", err)
+				}
+				if sourceChecksum == m.SourceChecksum {
+					// source file is not updated, so the mock is up-to-date.
+					return nil
+				}
 			default:
 				log.Printf("[WARN] unknown mock detected\nPlease reconfigure the mock. destination: %s", runner.GetDestination())
 				return nil
@@ -51,7 +59,7 @@ func (r Runner) Check() {
 				return fmt.Errorf("get checksum: %v", err)
 			}
 
-			if m.CheckSum != checksum {
+			if m.MockCheckSum != checksum {
 				// mock is not up to date
 				s := runner.GetSource()
 				d := runner.GetDestination()
@@ -67,7 +75,7 @@ func (r Runner) Check() {
 	}
 	err = g.Wait()
 	if err != nil {
-		log.Fatalf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, r.MockgenRunner)
+		log.Fatalf("failed to run: %v", err.Error())
 	}
 	if isFail {
 		log.Fatal("mocks is not up-to-date")
