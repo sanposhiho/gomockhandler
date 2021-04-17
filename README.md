@@ -6,7 +6,7 @@ gomockhandler is handler of [golang/mock](https://github.com/golang/mock), as th
 
 `gomockhandler` use one config file to generate all mocks.
 
-With `gomockhandler`, 
+With `gomockhandler`,
 
 - You can generate mocks **in parallel** :rocket:.
 - You can check if mock is **up-to-date** :sparkles:.
@@ -26,7 +26,7 @@ Some of you may often manage your mocks with `go generate` like below.
 //go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAG
 ```
 
-But, it will take long time to generate a log of mocks with `go generate ./...`, because `go generate` executes mockgen one by one. 
+But, it will take long time to generate a log of mocks with `go generate ./...`, because `go generate` executes mockgen one by one.
 
 And we cannot easily check if mock is up-to-date.
 
@@ -65,7 +65,7 @@ go install github.com/sanposhiho/gomockhandler@latest
 
 ## configuring
 
-You need a config for `gomockhandler`. 
+You need a config for `gomockhandler`.
 
 However, you don't need to generate/edit the config directly, it can be generated/edited from CLI.
 
@@ -73,13 +73,15 @@ However, you don't need to generate/edit the config directly, it can be generate
 
 You can configure a new mock to be generated with CLI. It will also check if mockgen will run correctly with that option.
 
-If a config file does not exist, a config file will be created. 
+If a config file does not exist, a config file will be created.
 
-(It is RECOMMENDED to name the config file `gomockhandler.json`, and place it in a location where the gomockhandler is likely to be run frequently.)
+It is RECOMMENDED to name the config file `gomockhandler.json`, and place it in a location where the gomockhandler is likely to be run frequently.
 
 `mockgen` has two modes of operation: source and reflect, and gomockhandler support both.
 
 See [golang/mock#running-mockgen](https://github.com/golang/mock#running-mockgen) for more information about the two modes and mockgen options.
+
+If there is no major reason, it is RECOMMENDED to use **Source Mode**, which is much faster because the gomockhandler will skip processing if the source file has not been changed.
 
 Source mode:
 ```
@@ -114,7 +116,7 @@ gomockhandler is designed to make it easy to switch from managing mocks with `go
 
 If you use `go:generate` to execute mockgen now, you can generate the config file by rewriting `go:generate` comment a little bit.
 
-Replace from `mockgen` to `gomockhandler -config=/path/to/gomockhandler.json` in all `go:generate` comments, and run `go generate ./...` in your project. And then, 
+Replace from `mockgen` to `gomockhandler -config=/path/to/gomockhandler.json` in all `go:generate` comments, and run `go generate ./...` in your project. And then,
 
 ```
 - //go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAG
@@ -150,7 +152,7 @@ It is useful for ci.
 ```
 gomockhandler -config=/path/to/gomockhandler.json check
 ```
-If some mocks are not up to date, you can see the error and `gomockhandler` will exit with exit-code 1 
+If some mocks are not up to date, you can see the error and `gomockhandler` will exit with exit-code 1
 
 ```
 2021/03/10 22:17:12 [WARN] mock is not up to date. source: ./interfaces/user.go, destination: ./interfaces/../mock/user.go
@@ -169,7 +171,8 @@ The config json file has the following format.
 {
 	"mocks": {
 		"mock/user.go": {
-			"checksum": "7E+SZ7+e0tK5wBe15dJLvA==",
+			"checksum": "qxZ/pLjLBtib7o+kDLOzOQ==",
+			"source_checksum": "UUyR0gaRX4IbPPAttwOCXw==",
 			"mode": "SOURCE_MODE",
 			"source_mode_runner": {
 				"source": "interfaces/user.go",
@@ -177,7 +180,8 @@ The config json file has the following format.
 			}
 		},
 		"mock/user2.go": {
-			"checksum": "BEqA5NiFCJa3De8kKXYf3g==",
+			"checksum": "qxZ/pLjLBtib7o+kDLOzOQ==",
+			"source_checksum": "AAAAAAAAAAAAAAAAAAAAAA==",
 			"mode": "REFLECT_MODE",
 			"reflect_mode_runner": {
 				"package_name": "playground/interfaces",
@@ -189,7 +193,9 @@ The config json file has the following format.
 }
 ```
 
-As mentioned above, there are two modes of mockgen, and the format of the config is slightly different depending on which mode you are using. 
+As mentioned above, there are two modes of mockgen, and the format of the config is slightly different depending on which mode you are using.
 In the `***mode-runner` field, specify the option to be used when running mockgen.
 
-In the checksum field, the checksum of the currently generated mock is stored. With this checksum, the gomockhandler checks if the mock is the same as the mock generated from the latest interface.
+In the `checksum` field, the checksum of the currently generated mock is stored. With this checksum, the gomockhandler checks if the mock is the same as the mock generated from the latest interface.
+
+In the `source_checksum` field, the checksum of the currently generated mock's source file is stored. This field is only valid in source mode, and when reflect mode is used, the value will be `AAAAAAAAAAAAAAAAAAAAAA==`.
