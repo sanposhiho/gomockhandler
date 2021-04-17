@@ -146,7 +146,7 @@ func easyjson6615c02eDecodeGithubComSanposhihoGomockhandlerInternalModel1(in *jl
 			continue
 		}
 		switch key {
-		case "mock_checksum":
+		case "checksum":
 			if in.IsNull() {
 				in.Skip()
 			} else {
@@ -195,7 +195,7 @@ func easyjson6615c02eEncodeGithubComSanposhihoGomockhandlerInternalModel1(out *j
 	first := true
 	_ = first
 	if true {
-		const prefix string = ",\"mock_checksum\":"
+		const prefix string = ",\"checksum\":"
 		first = false
 		out.RawString(prefix[1:])
 		out.Base64Bytes(in.MockCheckSum[:])

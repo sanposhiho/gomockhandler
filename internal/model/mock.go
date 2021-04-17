@@ -15,7 +15,7 @@ const (
 )
 
 type Mock struct {
-	MockCheckSum      [16]byte            `json:"mock_checksum,omitempty"`
+	MockCheckSum      [16]byte            `json:"checksum,omitempty"`
 	SourceChecksum    [16]byte            `json:"source_checksum,omitempty"`
 	Mode              mode                `json:"mode"`
 	ReflectModeRunner *reflectmode.Runner `json:"reflect_mode_runner,omitempty"`
