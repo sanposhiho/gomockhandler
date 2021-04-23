@@ -18,7 +18,7 @@ Here is some example of the mock being generated in half the time with `gomockha
 
 <img width="529" alt="Screen Shot 2021-03-25 at 11 56 29" src="https://user-images.githubusercontent.com/44139130/112412003-2494ae80-8d61-11eb-8b0f-08098ee6992e.png">
 
-This speedup is only due to the fact that I am running mockgen in parallel, so depending on the power of the PC you are using, you may or may not be able to get a higher speedup than this.
+This speedup is only due to the fact that gomockhandler is running mockgen in parallel, so depending on the power of the PC you are using, you may or may not be able to get a higher speedup than this.
 Also, the gomockhandler has a function to skip mock generation if the mock source file has not been updated, but in this experiment, all mocks were generated. (None of the mock generation was skipped.)
 
 ## Background
