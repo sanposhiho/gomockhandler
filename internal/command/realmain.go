@@ -20,6 +20,7 @@ type Runner struct {
 type Args struct {
 	ConfigPath    string
 	ForceGenerate bool
+	PathFilter    string
 
 	Source          string
 	Destination     string

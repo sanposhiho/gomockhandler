@@ -24,6 +24,7 @@ import (
 var (
 	configPath    = flag.String("config", "gomockhandler.json", "The path to config file.")
 	forceGenerate = flag.Bool("f", false, "If true, it will also generate mocks whose source has not been updated.")
+	pathFilter    = flag.String("target_dir", "", "By specifying a path, only mocks under that path will be targeted for commands `check` and `mockgen`")
 
 	// flags for mockgen
 	source          = flag.String("source", "", "[option for configure mockgen] (source mode) Input Go source file; enables source mode.")
@@ -50,6 +51,7 @@ func main() {
 		Args: command.Args{
 			ConfigPath:      *configPath,
 			ForceGenerate:   *forceGenerate,
+			PathFilter:      *pathFilter,
 			Source:          *source,
 			Destination:     *destination,
 			MockNames:       *packageOut,

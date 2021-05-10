@@ -11,9 +11,9 @@ type Runner interface {
 	Run() error
 
 	SetSource(new string)
+	GetSource() string
 	SetDestination(new string)
 	GetDestination() string
-	GetSource() string
 }
 
 func Checksum(r Runner) ([16]byte, error) {
