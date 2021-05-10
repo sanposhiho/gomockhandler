@@ -66,7 +66,7 @@ These are the options for using the gomockhandler.
   The default value is "./gomockhandler.json"
   
 -target_dir string
-  By specifying a path, Only mocks under the path will be targeted for commands `check` and `mockgen`.
+  Only mocks under the specified directory will be targeted for commands `check` and `mockgen`.
   By default, all files will be targeted.
   
 -f bool
