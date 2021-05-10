@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/sanposhiho/gomockhandler/internal/mockgen"
 
@@ -52,6 +53,21 @@ func (r Runner) Mockgen() {
 				log.Printf("[WARN] unknown mock detected\n")
 				return nil
 			}
+			if r.Args.PathFilter != "" {
+				dest, err := filepath.Abs(runner.GetDestination())
+				if err != nil {
+					return fmt.Errorf("failed to get absolute path from mock's destination, please make sure the destination is correct, destination: %s, :%w", runner.GetDestination(), err)
+				}
+				pf, err := filepath.Abs(r.Args.PathFilter)
+				if err != nil {
+					return fmt.Errorf("failed to get absolute path from your filter option, please make sure the filter option is correct, filter option: %s, :%w", r.Args.PathFilter, err)
+				}
+				if !strings.HasPrefix(dest, pf+"/") {
+					// skip
+					return nil
+				}
+			}
+
 			err = runner.Run()
 			if err != nil {
 				return fmt.Errorf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, r.MockgenRunner)

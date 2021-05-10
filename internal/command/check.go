@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/sanposhiho/gomockhandler/internal/mockgen"
 
@@ -43,7 +44,7 @@ func (r Runner) Check() {
 				runner = m.SourceModeRunner
 				sourceChecksum, err := mockgen.SourceChecksum(runner)
 				if err != nil {
-					log.Fatalf("failed to calculate checksum of the source: %v", err)
+					return fmt.Errorf("failed to calculate checksum of the source: %v", err)
 				}
 				if sourceChecksum == m.SourceChecksum && !r.Args.ForceGenerate {
 					// source file is not updated, so the mock is up-to-date.
@@ -52,6 +53,21 @@ func (r Runner) Check() {
 			default:
 				log.Printf("[WARN] unknown mock detected\nPlease reconfigure the mock. destination: %s", runner.GetDestination())
 				return nil
+			}
+
+			if r.Args.PathFilter != "" {
+				dest, err := filepath.Abs(runner.GetDestination())
+				if err != nil {
+					return fmt.Errorf("failed to get absolute path from mock's destination, please make sure the destination is correct, destination: %s, :%w", runner.GetDestination(), err)
+				}
+				pf, err := filepath.Abs(r.Args.PathFilter)
+				if err != nil {
+					return fmt.Errorf("failed to get absolute path from your filter option, please make sure the filter option is correct, filter option: %s, :%w", r.Args.PathFilter, err)
+				}
+				if !strings.HasPrefix(dest, pf+"/") {
+					// skip
+					return nil
+				}
 			}
 
 			checksum, err := mockgen.Checksum(runner)
