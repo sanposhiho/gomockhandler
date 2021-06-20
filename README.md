@@ -141,7 +141,8 @@ As you can see, you just need to think about the option `config`. (The default v
 gomockhandler -config=/path/to/gomockhandler.json -source=foo.go -destination=../mock/
 ```
 
----
+
+### [TIPS] switch from `go generate` to gomockhandler
 
 gomockhandler is designed to make it easy to switch from managing mocks with `go generate` to managing mocks with gomockhandler.
 
