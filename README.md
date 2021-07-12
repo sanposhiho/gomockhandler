@@ -74,31 +74,8 @@ These are the options for using the gomockhandler.
   The default value is false.
 ```
 
-## generate mock
 
-You can generate all mocks from config.
-
-```
-gomockhandler -config=/path/to/gomockhandler.json mockgen
-```
-
-## check if mock is up-to-date
-
-You can check if the mock is generated based on the latest interface.
-
-It is useful for ci.
-
-```
-gomockhandler -config=/path/to/gomockhandler.json check
-```
-If some mocks are not up to date, you can see the error and `gomockhandler` will exit with exit-code 1
-
-```
-2021/03/10 22:17:12 [WARN] mock is not up to date. source: ./interfaces/user.go, destination: ./interfaces/../mock/user.go
-2021/03/10 22:17:12 mocks is not up-to-date
-```
-
-## configuring
+## Getting started
 
 You need a config for `gomockhandler`.
 
@@ -170,6 +147,31 @@ You can remove the mocks to be generated from the config.
 
 ```
 gomockhandler -config=/path/to/gomockhandler.json -destination=./mock/user.go deletemock 
+```
+
+
+## generate mock
+
+You can generate all mocks from config.
+
+```
+gomockhandler -config=/path/to/gomockhandler.json mockgen
+```
+
+## check if mock is up-to-date
+
+You can check if the mock is generated based on the latest interface.
+
+It is useful for ci.
+
+```
+gomockhandler -config=/path/to/gomockhandler.json check
+```
+If some mocks are not up to date, you can see the error and `gomockhandler` will exit with exit-code 1
+
+```
+2021/03/10 22:17:12 [WARN] mock is not up to date. source: ./interfaces/user.go, destination: ./interfaces/../mock/user.go
+2021/03/10 22:17:12 mocks is not up-to-date
 ```
 
 ## edit config manually
