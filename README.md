@@ -20,7 +20,7 @@ Some of you may often manage your mocks with `go generate` like below.
 //go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAG
 ```
 
-But, it will take long time to generate a log of mocks with `go generate ./...`, because `go generate` executes mockgen one by one. And we cannot easily check if mock is up-to-date.
+But, it will take long time to generate a log of mocks with `go generate ./...`, because `go generate` executes `mockgen` **one by one**. And we cannot easily check if mock is up-to-date.
 
 `gomockhandler` is created to solve all of these problems.
 
