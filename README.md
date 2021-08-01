@@ -8,18 +8,9 @@ gomockhandler is handler of [golang/mock](https://github.com/golang/mock), as th
 
 With `gomockhandler`,
 
-- You can generate mocks **faster** :rocket:.
+- You can generate mocks **in parallel** :rocket:.
 - You can check if mock is **up-to-date** :sparkles:.
 - You can manage your mocks in **one config file** :books:.
-
-Here is some example of the mock being generated in half the time with `gomockhandler`. (I ran `mockgen` to generate same mocks in `go generate ./...`)
-
-<img width="509" alt="Screen Shot 2021-03-25 at 11 55 54" src="https://user-images.githubusercontent.com/44139130/112411968-1050b180-8d61-11eb-8321-d9a890de292a.png">
-
-<img width="529" alt="Screen Shot 2021-03-25 at 11 56 29" src="https://user-images.githubusercontent.com/44139130/112412003-2494ae80-8d61-11eb-8b0f-08098ee6992e.png">
-
-This speedup is only due to the fact that gomockhandler is running mockgen in parallel, so depending on the power of the PC you are using, you may or may not be able to get a higher speedup than this.
-Also, the gomockhandler has a function to skip mock generation if the mock source file has not been updated, but in this experiment, all mocks were generated. (None of the mock generation was skipped.)
 
 ## Background
 
