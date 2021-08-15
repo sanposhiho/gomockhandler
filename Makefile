@@ -1,7 +1,3 @@
-.PHONY:easyjson
-easyjson:
-	easyjson -all ./internal/model/config.go
-
 .PHONY:build
 build:
 	go build .
