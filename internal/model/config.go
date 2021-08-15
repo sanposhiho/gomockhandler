@@ -2,7 +2,6 @@ package model
 
 import "errors"
 
-//easyjson:json
 type Config struct {
 	// key: destination
 	Mocks map[string]*Mock `json:"mocks"`

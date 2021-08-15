@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/mailru/easyjson"
 	"github.com/sanposhiho/gomockhandler/internal/model"
 )
 
@@ -18,9 +17,9 @@ func NewRepository() Repository {
 }
 
 func (r *Repository) Put(m *model.Config, path string) error {
-	d, err := easyjson.Marshal(m)
+	d, err := json.Marshal(m)
 	if err != nil {
-		return fmt.Errorf("easyjson marshal: %w", err)
+		return fmt.Errorf("json marshal: %w", err)
 	}
 
 	var buf bytes.Buffer
@@ -42,9 +41,9 @@ func (r *Repository) Get(path string) (*model.Config, error) {
 	}
 
 	var m model.Config
-	err = easyjson.Unmarshal(raw, &m)
+	err = json.Unmarshal(raw, &m)
 	if err != nil {
-		return nil, fmt.Errorf("easyjson unmarshal: %w", err)
+		return nil, fmt.Errorf("json unmarshal: %w", err)
 	}
 
 	return &m, err

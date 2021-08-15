@@ -44,7 +44,7 @@ func (r Runner) GenerateConfig() {
 	destinationPathInPro := util.PathInProject(configDir, originalPath+"/"+r.Args.Destination)
 	r.MockgenRunner.SetDestination(destinationPathInPro)
 
-	var sourceChecksum [16]byte
+	var sourceChecksum string
 	if r.Args.Source != "" {
 		// change source as seen from the config directory.
 		sourcePathInPro := util.PathInProject(configDir, originalPath+"/"+r.Args.Source)

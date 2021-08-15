@@ -35,7 +35,7 @@ func (r Runner) Mockgen() {
 		m := m
 		g.Go(func() error {
 			var runner mockgen.Runner
-			var sourceChecksum [16]byte
+			var sourceChecksum string
 			switch m.Mode {
 			case model.ReflectMode:
 				runner = m.ReflectModeRunner
