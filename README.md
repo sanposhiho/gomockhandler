@@ -2,7 +2,7 @@
 
 **If you find any bugs or have feature requests, please feel free to create an issue.**
 
-Mr. gomockhandler is the clever manager for [golang/mock](https://github.com/golang/mock).
+Mr. gomockhandler is the clever and fast manager of [golang/mock](https://github.com/golang/mock).
 
 <img src="https://user-images.githubusercontent.com/44139130/131862740-6b4bfba8-be02-43d0-99d1-62efd8318381.JPG" width="400px">
 
