@@ -142,6 +142,7 @@ You can remove the mocks to be generated from the config.
 gomockhandler -config=/path/to/gomockhandler.json -destination=./mock/user.go deletemock 
 ```
 
+This command only delete the mock from the configuration. So please delete the mock file itself manually.
 
 ## generate mock
 
