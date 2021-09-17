@@ -18,5 +18,9 @@ func (r Runner) DeleteMock() {
 	if err := r.ConfigRepo.Put(chunk, configPath); err != nil {
 		log.Fatalf("failed to put config: %v", err)
 	}
+
+	log.Println("[INFO] The mock has been successfully deleted from configuration.")
+	log.Println("Please delete the mock file itself manually.")
+
 	return
 }
