@@ -208,3 +208,7 @@ In the `***mode-runner` field, specify the option to be used when running mockge
 In the `checksum` field, the checksum of the currently generated mock is stored. With this checksum, the gomockhandler checks if the mock is the same as the mock generated from the latest interface.
 
 In the `source_checksum` field, the checksum of the currently generated mock's source file is stored. This field is only valid in source mode, and when reflect mode is used, the value will be `AAAAAAAAAAAAAAAAAAAAAA==`.
+
+## contributing
+
+see [CONTRIBUTION.md](CONTRIBUTION.md)

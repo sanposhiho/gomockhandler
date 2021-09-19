@@ -2,7 +2,8 @@
 build:
 	go build .
 
-# test on playground
+# for playground
+# build gomockhandler and generate gomockhandler.json with it.
 .PHONY:playground
 playground:
 	go build . ;\
@@ -10,7 +11,9 @@ playground:
 	go generate ./...; \
 	rm ../gomockhandler;
 
-# test on playground
+# for playground
+# build gomockhandler and generate mocks with it.
+# It use gomockhandler.json on /playground dir. So you may have to run make playground first.
 .PHONY:playground-gen
 playground-gen:
 	go build . ;\
@@ -19,6 +22,8 @@ playground-gen:
 	rm ../gomockhandler;
 
 # test on playground
+# build gomockhandler and check mocks with it.
+# It use gomockhandler.json on /playground dir. So you may have to run make playground first.
 .PHONY:playground-check
 playground-check:
 	go build . ;\
@@ -27,6 +32,8 @@ playground-check:
 	rm ../gomockhandler;
 
 # test on playground
+# build gomockhandler and delete mocks with it.
+# It use gomockhandler.json on /playground dir. So you may have to run make playground first.
 .PHONY:playground-delete
 playground-delete:
 	go build . ;\
@@ -35,7 +42,7 @@ playground-delete:
 	rm ../gomockhandler;
 
 
-# clean playground
+# clean up playground
 .PHONY:clean
 clean:
 	cd playground ;\
