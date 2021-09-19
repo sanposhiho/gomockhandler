@@ -211,4 +211,4 @@ In the `source_checksum` field, the checksum of the currently generated mock's s
 
 ## contributing
 
-see [CONTRIBUTION.md](CONTRIBUTION.md)
+see [CONTRIBUTING.md](CONTRIBUTING.md)
