@@ -45,21 +45,14 @@ func (r Runner) Check() {
 		g.Go(func() error {
 			switch m.Mode {
 			case model.ReflectMode:
-				key := m.ReflectModeRunner.PackageName + " (interfaces: " + m.ReflectModeRunner.Interfaces + ")"
-				if ok := zombieChecker.Search(key); !ok {
-					fmt.Fprintf(os.Stderr, "[ERROR] mock is not up to date. destination: %s\n", key)
-					isFail = true
-				}
-
 				runner = m.ReflectModeRunner
 			case model.SourceMode:
-				key := m.SourceModeRunner.Source
+				runner = m.SourceModeRunner
+				key := runner.GetDestination()
 				if ok := zombieChecker.Search(key); !ok {
-					fmt.Fprintf(os.Stderr, "[ERROR] mock is not up to date. destination: %s\n", key)
+					fmt.Fprintf(os.Stderr, "[ERROR] mock has not been generated. destination: %s\n", key)
 					isFail = true
 				}
-
-				runner = m.SourceModeRunner
 				sourceChecksum, err := mockgen.SourceChecksum(runner)
 				if err != nil {
 					return fmt.Errorf("failed to calculate checksum of the source: %v", err)
@@ -88,6 +81,12 @@ func (r Runner) Check() {
 				}
 			}
 
+			key := runner.GetDestination()
+			if ok := zombieChecker.Search(key); !ok {
+				fmt.Fprintf(os.Stderr, "[ERROR] mock has not been generated. destination: %s\n", key)
+				isFail = true
+			}
+
 			checksum, err := mockgen.Checksum(runner)
 			if err != nil {
 				return fmt.Errorf("get checksum: %v", err)
@@ -113,7 +112,7 @@ func (r Runner) Check() {
 	}
 
 	if zombieList := zombieChecker.Check(); len(zombieList) != 0 {
-		fmt.Fprintf(os.Stderr, "There are un-managed mocks!!\nThe list of them: %v\n", zombieList)
+		fmt.Fprintf(os.Stderr, "[WARN] Some mocks are un-managed by gomockhandler: %v\n", zombieList)
 	}
 	if isFail {
 		log.Fatal("mocks is not up-to-date")

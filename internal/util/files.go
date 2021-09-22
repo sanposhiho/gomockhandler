@@ -31,31 +31,27 @@ func Tree(dir string) ([]string, error) {
 	return paths, nil
 }
 
-func ReadTwoLines(filename string) ([]string, error) {
+func ReadALine(filename string) (string, error) {
 	_, err := os.Stat(filename)
 	if err != nil {
-		return nil, fmt.Errorf("there is not %s: %w", filename, err)
+		return "", fmt.Errorf("there is not %s: %w", filename, err)
 	}
 
 	file, err := os.Open(filename)
 	defer file.Close()
 	if err != nil {
-		return nil, fmt.Errorf("error to open the file: %w", err)
+		return "", fmt.Errorf("error to open the file: %w", err)
 	}
 
-	var lines []string
+	var line string
 	fileScanner := bufio.NewScanner(file)
-	i := 0
 	for fileScanner.Scan() {
-		if i > 2 {
-			break
-		}
-		lines = append(lines, fileScanner.Text())
-		i++
+		line = fileScanner.Text()
+		break
 	}
 	if err := fileScanner.Err(); err != nil {
 		log.Fatalf("error to scan the file: %s", err)
 	}
 
-	return lines, nil
+	return line, nil
 }
