@@ -48,19 +48,6 @@ func (r Runner) Check() {
 				runner = m.ReflectModeRunner
 			case model.SourceMode:
 				runner = m.SourceModeRunner
-				key := runner.GetDestination()
-				if ok := zombieChecker.Search(key); !ok {
-					fmt.Fprintf(os.Stderr, "[ERROR] mock has not been generated. destination: %s\n", key)
-					isFail = true
-				}
-				sourceChecksum, err := mockgen.SourceChecksum(runner)
-				if err != nil {
-					return fmt.Errorf("failed to calculate checksum of the source: %v", err)
-				}
-				if sourceChecksum == m.SourceChecksum && !r.Args.ForceGenerate {
-					// source file is not updated, so the mock is up-to-date.
-					return nil
-				}
 			default:
 				log.Printf("[WARN] unknown mock detected\nPlease reconfigure the mock. destination: %s", runner.GetDestination())
 				return nil
@@ -93,6 +80,17 @@ func (r Runner) Check() {
 				return fmt.Errorf("get checksum: %v", err)
 			}
 
+			if m.Mode == model.SourceMode {
+				sourceChecksum, err := mockgen.SourceChecksum(runner)
+				if err != nil {
+					return fmt.Errorf("failed to calculate checksum of the source: %v", err)
+				}
+				if sourceChecksum == m.SourceChecksum && !r.Args.ForceGenerate {
+					// source file is not updated, so the mock is up-to-date.
+					return nil
+				}
+			}
+
 			if m.MockCheckSum != checksum {
 				// mock is not up to date
 				s := runner.GetSource()
@@ -114,6 +112,7 @@ func (r Runner) Check() {
 
 	if zombieList := zombieChecker.Check(); len(zombieList) != 0 {
 		fmt.Fprintf(os.Stderr, "[WARN] Some mocks are un-managed by gomockhandler: %v\n", zombieList)
+		isFail = true
 	}
 	if isFail {
 		log.Fatal("mocks is not up-to-date")
