@@ -85,6 +85,7 @@ func (r Runner) Check() {
 			if ok := zombieChecker.Search(key); !ok {
 				fmt.Fprintf(os.Stderr, "[ERROR] mock has not been generated. destination: %s\n", key)
 				isFail = true
+				return nil
 			}
 
 			checksum, err := mockgen.Checksum(runner)
