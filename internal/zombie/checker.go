@@ -13,13 +13,13 @@ import (
 )
 
 type Checker struct {
-	hash map[string]bool
-	mux sync.Mutex
+	isMockManaged map[string]bool
+	mux           sync.Mutex
 }
 
 func NewChecker() *Checker {
 	return &Checker{
-		hash: map[string]bool{},
+		isMockManaged: map[string]bool{},
 	}
 }
 
@@ -29,7 +29,7 @@ const (
 
 func (c *Checker) Check() []string {
 	var zombieList []string
-	for key, value := range c.hash {
+	for key, value := range c.isMockManaged {
 		if !value {
 			zombieList = append(zombieList, key)
 		}
@@ -38,10 +38,10 @@ func (c *Checker) Check() []string {
 	return zombieList
 }
 func (c *Checker) Search(key string) bool {
-	_, ok := c.hash[key]
+	_, ok := c.isMockManaged[key]
 	if ok {
 		c.mux.Lock()
-		c.hash[key] = true
+		c.isMockManaged[key] = true
 		c.mux.Unlock()
 	}
 
@@ -70,6 +70,7 @@ func (c *Checker) setHash(ctx context.Context, trees []string) error {
 		sem.Acquire(ctx, 1)
 
 		eg.Go(func() error {
+			defer sem.Release(1)
 			line, err := util.ReadALine(path)
 			if err != nil {
 				return fmt.Errorf("failed to readline to find a mock: %w", err)
@@ -77,10 +78,9 @@ func (c *Checker) setHash(ctx context.Context, trees []string) error {
 			if line == CommentGeneratedByGoMock {
 				c.mux.Lock()
 				key := path
-				c.hash[key] = false
+				c.isMockManaged[key] = false
 				c.mux.Unlock()
 			}
-			sem.Release(1)
 			return nil
 		})
 	}
