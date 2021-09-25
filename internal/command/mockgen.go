@@ -50,7 +50,7 @@ func (r Runner) Mockgen() {
 				runner = m.SourceModeRunner
 				sourceChecksum, err = mockgen.SourceChecksum(runner)
 				if err != nil {
-					log.Fatalf("failed to calculate checksum of the source: %v", err)
+					return fmt.Errorf("failed to calculate checksum of the source: %v", err)
 				}
 				if sourceChecksum == m.SourceChecksum && !r.Args.ForceGenerate {
 					_, err := os.Stat(runner.GetDestination())
