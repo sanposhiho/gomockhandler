@@ -46,8 +46,11 @@ func (r Runner) Mockgen() {
 					log.Fatalf("failed to calculate checksum of the source: %v", err)
 				}
 				if sourceChecksum == m.SourceChecksum && !r.Args.ForceGenerate {
-					// source file is not updated, so we don't have to generate mock.
-					return nil
+					_, err := os.Stat(runner.GetDestination())
+					if err == nil {
+						// source file is not updated and mock file is exist, so we don't have to generate mock.
+						return nil
+					}
 				}
 			default:
 				log.Printf("[WARN] unknown mock detected\n")
