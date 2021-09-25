@@ -6,7 +6,10 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
+
+	"golang.org/x/sync/semaphore"
 
 	"golang.org/x/sync/errgroup"
 
@@ -38,11 +41,14 @@ func (r Runner) Check() {
 
 	isFail := false
 	g, _ := errgroup.WithContext(ctx)
+	sem := semaphore.NewWeighted(int64(runtime.GOMAXPROCS(0)))
 	for _, m := range ch.Mocks {
 		m := m
+		sem.Acquire(ctx, 1)
 
 		var runner mockgen.Runner
 		g.Go(func() error {
+			defer sem.Release(1)
 			switch m.Mode {
 			case model.ReflectMode:
 				runner = m.ReflectModeRunner
