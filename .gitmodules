@@ -1,0 +1,3 @@
+[submodule "submodules/gomock"]
+	path = submodules/gomock
+	url = git@github.com:golang/mock.git

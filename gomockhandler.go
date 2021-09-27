@@ -8,7 +8,11 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
+
+	"github.com/sanposhiho/gomockhandler/internal/mockgen/native"
+	"github.com/sanposhiho/gomockhandler/internal/mockgen/native/runnermanager"
 
 	"golang.org/x/mod/modfile"
 
@@ -16,8 +20,6 @@ import (
 
 	"github.com/sanposhiho/gomockhandler/internal/command"
 
-	"github.com/sanposhiho/gomockhandler/internal/mockgen/reflectmode"
-	"github.com/sanposhiho/gomockhandler/internal/mockgen/sourcemode"
 	mockrepo "github.com/sanposhiho/gomockhandler/internal/repository/config"
 )
 
@@ -89,6 +91,8 @@ func prepareMockgenRunner() mockgen.Runner {
 		log.Fatal("need -destination option")
 	}
 
+	manager := runnermanager.New(int64(runtime.GOMAXPROCS(0)))
+
 	if *source == "" {
 		// reflect mode
 		if flag.NArg() != 2 {
@@ -106,11 +110,11 @@ func prepareMockgenRunner() mockgen.Runner {
 				log.Fatalf("Parse package name failed: %v", err)
 			}
 		}
-		return reflectmode.NewRunner(packageName, interfaces, *source, *destination, *packageOut, *imports, *auxFiles, *buildFlags, *mockNames, *selfPackage, *copyrightFile, *execOnly, *progOnly, *writePkgComment, *debugParser)
+		return native.NewRunner(manager, packageName, interfaces, *source, *destination, *packageOut, *imports, *auxFiles, *buildFlags, *mockNames, *selfPackage, *copyrightFile, *execOnly, *progOnly, *writePkgComment, *debugParser)
 	}
 
 	// source mode
-	return sourcemode.NewRunner(*source, *destination, *packageOut, *imports, *auxFiles, *mockNames, *selfPackage, *copyrightFile, *writePkgComment, *debugParser)
+	return native.NewRunner(manager, "", "", *source, *destination, *packageOut, *imports, *auxFiles, *buildFlags, *mockNames, *selfPackage, *copyrightFile, *execOnly, *progOnly, *writePkgComment, *debugParser)
 }
 
 // Plundered from golang/mock/mockgen/parse.go.

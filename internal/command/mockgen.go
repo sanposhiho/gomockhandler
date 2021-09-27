@@ -9,7 +9,7 @@ import (
 	"runtime"
 	"strings"
 
-	"golang.org/x/sync/semaphore"
+	"github.com/sanposhiho/gomockhandler/internal/mockgen/native/runnermanager"
 
 	"github.com/sanposhiho/gomockhandler/internal/mockgen"
 
@@ -34,16 +34,24 @@ func (r Runner) Mockgen() {
 	}
 
 	g, _ := errgroup.WithContext(context.Background())
-	sem := semaphore.NewWeighted(int64(runtime.GOMAXPROCS(0)))
+	//em := semaphore.NewWeighted(int64(runtime.GOMAXPROCS(0)))
+
+	manager := runnermanager.New(int64(runtime.GOMAXPROCS(0)))
+
 	for _, m := range ch.Mocks {
 		m := m
-		sem.Acquire(context.Background(), 1)
+		//sem.Acquire(context.Background(), 1)
 
 		g.Go(func() error {
-			defer sem.Release(1)
+			//			defer sem.Release(1)
 			var runner mockgen.Runner
 			var sourceChecksum string
 			switch m.Mode {
+			case model.NativeMockGenMode:
+				nativerunner := m.NativeModeRunner
+				nativerunner.Manager = manager
+
+				runner = nativerunner
 			case model.ReflectMode:
 				runner = m.ReflectModeRunner
 			case model.SourceMode:

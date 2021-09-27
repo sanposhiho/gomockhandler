@@ -62,12 +62,15 @@ func (c *Checker) FindMocks(ctx context.Context) error {
 }
 
 func (c *Checker) setHash(ctx context.Context, trees []string) error {
-	eg, _  := errgroup.WithContext(ctx)
+	eg, _ := errgroup.WithContext(ctx)
 	sem := semaphore.NewWeighted(int64(runtime.GOMAXPROCS(0)))
 
 	for _, path := range trees {
 		path := path
-		sem.Acquire(ctx, 1)
+		err := sem.Acquire(context.Background(), 1)
+		if err != nil {
+			return fmt.Errorf("acquire semaphore: %w", err)
+		}
 
 		eg.Go(func() error {
 			defer sem.Release(1)

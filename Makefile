@@ -43,8 +43,49 @@ playground-delete:
 
 
 # clean up playground
-.PHONY:clean
+.PHONY:playground-clean
 clean:
 	cd playground ;\
 	rm gomockhandler.json;\
 	rm -rf mock/
+
+
+# for playground/benchmark
+# build gomockhandler and generate gomockhandler.json with it.
+.PHONY:benchmark
+benchmark:
+	cd playground/benchmark ;\
+	go generate ./...; \
+	rm ../../gomockhandler ;
+
+
+# for playground/benchmark
+# build gomockhandler and generate mocks with it.
+# It use gomockhandler.json on /playground dir. So you may have to run make playground first.
+.PHONY:benchmark-gen
+benchmark-gen:
+	cd playground/benchmark ;\
+	echo "gomockhandler";\
+	time ../../gomockhandler -config=gomockhandler.json -f mockgen ;\
+	sleep 30s;\
+	echo "mockgen + go generate";\
+	cd generator ;\
+    time go generate ./...; \
+	rm ../../../gomockhandler ;
+
+# test on playground/benchmark
+# build gomockhandler and check mocks with it.
+# It use gomockhandler.json on /playground dir. So you may have to run make playground first.
+.PHONY:benchmark-check
+benchmark-check:
+	go build . ;\
+	cd playground/benchmark ;\
+	time ../../gomockhandler -config=gomockhandler.json check ;\
+	rm ../../gomockhandler ;
+
+# clean up playground/benchmark
+.PHONY:benchmark-clean
+benchmark-clean:
+	cd playground/benchmark ;\
+	rm gomockhandler.json;\
+	rm -rf mock*

@@ -40,9 +40,19 @@ func (r Runner) GenerateConfig() {
 		chunk = model.NewChunk()
 	}
 
-	// change destination as seen from the config directory.
-	destinationPathInPro := util.PathInProject(configDir, originalPath+"/"+r.Args.Destination)
-	r.MockgenRunner.SetDestination(destinationPathInPro)
+	// move to the original directory.
+	if err := os.Chdir(originalPath); err != nil {
+		log.Fatalf("failed to change dir: %v", err)
+	}
+
+	if err := r.MockgenRunner.Run(); err != nil {
+		log.Fatalf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, r.MockgenRunner)
+	}
+
+	// move to the config directory
+	if err := os.Chdir(configDir); err != nil {
+		log.Fatalf("failed to change dir: %v", err)
+	}
 
 	var sourceChecksum string
 	if r.Args.Source != "" {
@@ -56,9 +66,9 @@ func (r Runner) GenerateConfig() {
 		}
 	}
 
-	if err := r.MockgenRunner.Run(); err != nil {
-		log.Fatalf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, r.MockgenRunner)
-	}
+	// change destination as seen from the config directory.
+	destinationPathInPro := util.PathInProject(configDir, originalPath+"/"+r.Args.Destination)
+	r.MockgenRunner.SetDestination(destinationPathInPro)
 
 	// calculate mock's check sum
 	checksum, err := util.CalculateCheckSum(r.MockgenRunner.GetDestination())
