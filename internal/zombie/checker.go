@@ -14,7 +14,7 @@ import (
 
 type Checker struct {
 	isMockManaged map[string]bool
-	mux           sync.Mutex
+	mux           sync.RWMutex
 }
 
 func NewChecker() *Checker {
@@ -38,7 +38,9 @@ func (c *Checker) Check() []string {
 	return zombieList
 }
 func (c *Checker) Search(key string) bool {
+	c.mux.RLock()
 	_, ok := c.isMockManaged[key]
+	c.mux.RUnlock()
 	if ok {
 		c.mux.Lock()
 		c.isMockManaged[key] = true
@@ -62,7 +64,7 @@ func (c *Checker) FindMocks(ctx context.Context) error {
 }
 
 func (c *Checker) setHash(ctx context.Context, trees []string) error {
-	eg, _  := errgroup.WithContext(ctx)
+	eg, _ := errgroup.WithContext(ctx)
 	sem := semaphore.NewWeighted(int64(runtime.GOMAXPROCS(0)))
 
 	for _, path := range trees {
