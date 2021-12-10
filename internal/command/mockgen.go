@@ -80,7 +80,7 @@ func (r Runner) Mockgen() {
 
 			err = runner.Run()
 			if err != nil {
-				return fmt.Errorf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, r.MockgenRunner)
+				return fmt.Errorf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, runner)
 			}
 
 			checksum, err := util.CalculateCheckSum(runner.GetDestination())
