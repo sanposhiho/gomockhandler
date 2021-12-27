@@ -52,22 +52,16 @@ func ReadALine(filename string) (string, error) {
 	}
 
 	buf := bytes.NewBuffer(data)
-	if cont {
-		for {
-			data, cont, err = r.ReadLine()
-			if err == io.EOF {
-				break
-			} else if err != nil {
-				return "", fmt.Errorf("error to read the file: %w", err)
-			}
+	for cont {
+		data, cont, err = r.ReadLine()
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			return "", fmt.Errorf("error to read the file: %w", err)
+		}
 
-			if _, err = buf.Write(data); err != nil {
-				return "", fmt.Errorf("error to append data to buffer: %w", err)
-			}
-
-			if !cont {
-				break
-			}
+		if _, err = buf.Write(data); err != nil {
+			return "", fmt.Errorf("error to append data to buffer: %w", err)
 		}
 	}
 
