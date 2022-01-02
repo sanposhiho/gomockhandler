@@ -2,9 +2,10 @@ package util
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
+	"io"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 )
@@ -43,15 +44,26 @@ func ReadALine(filename string) (string, error) {
 		return "", fmt.Errorf("error to open the file: %w", err)
 	}
 
-	var line string
-	fileScanner := bufio.NewScanner(file)
-	for fileScanner.Scan() {
-		line = fileScanner.Text()
-		break
-	}
-	if err := fileScanner.Err(); err != nil {
-		log.Fatalf("error to scan the file: %s", err)
+	r := bufio.NewReader(file)
+
+	data, cont, err := r.ReadLine()
+	if err != nil && err != io.EOF {
+		return "", fmt.Errorf("error to read the file: %w", err)
 	}
 
-	return line, nil
+	buf := bytes.NewBuffer(data)
+	for cont {
+		data, cont, err = r.ReadLine()
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			return "", fmt.Errorf("error to read the file: %w", err)
+		}
+
+		if _, err = buf.Write(data); err != nil {
+			return "", fmt.Errorf("error to append data to buffer: %w", err)
+		}
+	}
+
+	return buf.String(), nil
 }
