@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func Tree(dir string) ([]string, error) {
@@ -18,6 +19,11 @@ func Tree(dir string) ([]string, error) {
 
 	var paths []string
 	for _, file := range files {
+		if strings.Contains(file.Name(), "vendor") {
+			// vendor dir should be ignored.
+			continue
+		}
+
 		if file.IsDir() {
 			childPaths, err := Tree(filepath.Join(dir, file.Name()))
 			if err != nil {
