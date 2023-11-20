@@ -33,7 +33,13 @@ And with this background, it is designed to make it easy to switch from managing
 You have to install `mockgen` first.
 
 ```
-go install go.uber.org/mock/mockgen@latest
+go install github.com/golang/mock/mockgen@latest
+```
+
+Next, install gomockhandler.
+
+```
+go install github.com/sanposhiho/gomockhandler@latest
 ```
 
 ## How to use
