@@ -36,6 +36,12 @@ You have to install `mockgen` first.
 go install go.uber.org/mock/mockgen@latest
 ```
 
+Next, install gomockhandler.
+
+```
+go install github.com/sanposhiho/gomockhandler@latest
+```
+
 ## How to use
 
 `gomockhandler` is designed to be **simple** and does only three things.
