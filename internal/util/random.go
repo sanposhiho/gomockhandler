@@ -12,7 +12,7 @@ import (
 func CalculateCheckSum(filePath string) (string, error) {
 	file, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		return "", fmt.Errorf("failed read file. filename: %s, err: %w", filePath)
+		return "", fmt.Errorf("failed read file. filename: %s, err: %w", filePath, err)
 	}
 
 	hash := md5.Sum(file)
