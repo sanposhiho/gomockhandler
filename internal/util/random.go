@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -15,7 +16,11 @@ func CalculateCheckSum(filePath string) (string, error) {
 		return "", fmt.Errorf("failed read file. filename: %s, err: %w", filePath, err)
 	}
 
-	hash := md5.Sum(file)
+	originFilePath := OriginFilePathFromTmpFilePath(filePath)
+	re := regexp.MustCompile("(//.+mockgen.+-destination=)(" + filePath + ")")
+	trimmedFile := re.ReplaceAllString(string(file), "${1}"+originFilePath)
+
+	hash := md5.Sum([]byte(trimmedFile))
 	strhash := base64.StdEncoding.EncodeToString(hash[:])
 	return strhash, nil
 }
@@ -27,4 +32,8 @@ func PathInProject(projectRoot, path string) string {
 func TmpFilePath(original string) string {
 	d, f := filepath.Split(original)
 	return d + "tmp_" + f
+}
+
+func OriginFilePathFromTmpFilePath(tmpFilePath string) string {
+	return strings.Replace(tmpFilePath, "tmp_", "", 1)
 }
