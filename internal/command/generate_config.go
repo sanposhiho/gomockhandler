@@ -1,12 +1,12 @@
 package command
 
 import (
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 
 	"github.com/sanposhiho/gomockhandler/internal/mockgen"
-
 	"github.com/sanposhiho/gomockhandler/internal/model"
 	"github.com/sanposhiho/gomockhandler/internal/util"
 )
@@ -60,8 +60,13 @@ func (r Runner) GenerateConfig() {
 		log.Fatalf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, r.MockgenRunner)
 	}
 
+	file, err := ioutil.ReadFile(r.MockgenRunner.GetDestination())
+	if err != nil {
+		log.Fatalf("failed read file. filename: %s, err: %w", r.MockgenRunner.GetDestination(), err)
+	}
+
 	// calculate mock's check sum
-	checksum, err := util.CalculateCheckSum(r.MockgenRunner.GetDestination())
+	checksum, err := util.CalculateCheckSum(file)
 	if err != nil {
 		log.Fatalf("failed to calculate checksum of the mock: %v", err)
 	}
