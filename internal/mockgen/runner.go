@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"regexp"
 	"strings"
 
 	"github.com/sanposhiho/gomockhandler/internal/util"
@@ -50,8 +49,7 @@ func Checksum(r Runner) (string, error) {
 
 func replaceTmpPathWithOriginal(tmpFilePath string, tmpFile []byte) string {
 	originFilePath := strings.Replace(tmpFilePath, "tmp_", "", 1)
-	re := regexp.MustCompile("(//.+mockgen.+-destination=)(" + tmpFilePath + ")")
-	return re.ReplaceAllString(string(tmpFile), "${1}"+originFilePath)
+	return strings.Replace(string(tmpFile), tmpFilePath, originFilePath, 1)
 }
 
 func SourceChecksum(r Runner) (string, error) {
