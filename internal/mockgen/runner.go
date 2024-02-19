@@ -36,6 +36,7 @@ func Checksum(r Runner) (string, error) {
 		return "", fmt.Errorf("failed read file. filename: %s, err: %w", tmpFilePath, err)
 	}
 
+	// See https://github.com/sanposhiho/gomockhandler/issues/88
 	adjustedFile := replaceTmpPathWithOriginal(tmpFilePath, tmpFile)
 
 	checksum, err := util.CalculateCheckSum([]byte(adjustedFile))
