@@ -2,7 +2,10 @@ package mockgen
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/sanposhiho/gomockhandler/internal/util"
 )
@@ -18,18 +21,26 @@ type Runner interface {
 
 func Checksum(r Runner) (string, error) {
 	d := r.GetDestination()
-	tmpFile := util.TmpFilePath(d)
-	defer os.Remove(tmpFile)
+	tmpFilePath := util.TmpFilePath(d)
+	defer os.Remove(tmpFilePath)
 
 	// use tmpfile to test generating mock
-	r.SetDestination(tmpFile)
+	r.SetDestination(tmpFilePath)
 	defer r.SetDestination(d)
 
 	if err := r.Run(); err != nil {
 		return "", fmt.Errorf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, r)
 	}
 
-	checksum, err := util.CalculateCheckSum(tmpFile)
+	tmpFile, err := ioutil.ReadFile(tmpFilePath)
+	if err != nil {
+		return "", fmt.Errorf("failed read file. filename: %s, err: %w", tmpFilePath, err)
+	}
+
+	// See https://github.com/sanposhiho/gomockhandler/issues/88
+	adjustedFile := replaceTmpPathWithOriginal(tmpFilePath, tmpFile)
+
+	checksum, err := util.CalculateCheckSum([]byte(adjustedFile))
 	if err != nil {
 		return "", fmt.Errorf("calculate checksum of the mock: %v", err)
 	}
@@ -37,8 +48,18 @@ func Checksum(r Runner) (string, error) {
 	return checksum, nil
 }
 
+func replaceTmpPathWithOriginal(tmpFilePath string, tmpFile []byte) string {
+	d, f := filepath.Split(tmpFilePath)
+	originFilePath := filepath.Join(d, strings.Replace(f, "tmp_", "", 1))
+	return strings.Replace(string(tmpFile), tmpFilePath, originFilePath, 1)
+}
+
 func SourceChecksum(r Runner) (string, error) {
-	checksum, err := util.CalculateCheckSum(r.GetSource())
+	file, err := ioutil.ReadFile(r.GetSource())
+	if err != nil {
+		return "", fmt.Errorf("failed read file. filename: %s, err: %w", r.GetSource(), err)
+	}
+	checksum, err := util.CalculateCheckSum(file)
 	if err != nil {
 		return "", fmt.Errorf("calculate checksum of the mock source: %v", err)
 	}

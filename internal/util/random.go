@@ -3,18 +3,11 @@ package util
 import (
 	"crypto/md5"
 	"encoding/base64"
-	"fmt"
-	"io/ioutil"
 	"path/filepath"
 	"strings"
 )
 
-func CalculateCheckSum(filePath string) (string, error) {
-	file, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		return "", fmt.Errorf("failed read file. filename: %s, err: %w", filePath, err)
-	}
-
+func CalculateCheckSum(file []byte) (string, error) {
 	hash := md5.Sum(file)
 	strhash := base64.StdEncoding.EncodeToString(hash[:])
 	return strhash, nil

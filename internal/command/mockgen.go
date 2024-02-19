@@ -3,19 +3,19 @@ package command
 import (
 	"context"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
 
+	"golang.org/x/sync/errgroup"
 	"golang.org/x/sync/semaphore"
 
 	"github.com/sanposhiho/gomockhandler/internal/mockgen"
-
 	"github.com/sanposhiho/gomockhandler/internal/model"
 	"github.com/sanposhiho/gomockhandler/internal/util"
-	"golang.org/x/sync/errgroup"
 )
 
 func (r Runner) Mockgen() {
@@ -82,8 +82,11 @@ func (r Runner) Mockgen() {
 			if err != nil {
 				return fmt.Errorf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, runner)
 			}
-
-			checksum, err := util.CalculateCheckSum(runner.GetDestination())
+			file, err := ioutil.ReadFile(r.MockgenRunner.GetDestination())
+			if err != nil {
+				return fmt.Errorf("failed read file. filename: %s, err: %w", r.MockgenRunner.GetDestination(), err)
+			}
+			checksum, err := util.CalculateCheckSum(file)
 			if err != nil {
 				return fmt.Errorf("calculate checksum of the mock: %v", err)
 			}
