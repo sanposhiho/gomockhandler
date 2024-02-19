@@ -21,7 +21,3 @@ func TmpFilePath(original string) string {
 	d, f := filepath.Split(original)
 	return d + "tmp_" + f
 }
-
-func RemoveTmpPrefix(tmpFilePath string) string {
-	return strings.Replace(tmpFilePath, "tmp_", "", 1)
-}
