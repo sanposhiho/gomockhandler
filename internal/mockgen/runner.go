@@ -3,7 +3,6 @@ package mockgen
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"regexp"
 
@@ -34,7 +33,7 @@ func Checksum(r Runner) (string, error) {
 
 	tmpFile, err := ioutil.ReadFile(tmpFilePath)
 	if err != nil {
-		log.Fatalf("failed read file. filename: %s, err: %w", tmpFilePath, err)
+		return "", fmt.Errorf("failed read file. filename: %s, err: %w", tmpFilePath, err)
 	}
 
 	adjustedFile := replaceTmpPathWithOriginal(tmpFilePath, tmpFile)
@@ -56,7 +55,7 @@ func replaceTmpPathWithOriginal(tmpFilePath string, tmpFile []byte) string {
 func SourceChecksum(r Runner) (string, error) {
 	file, err := ioutil.ReadFile(r.GetSource())
 	if err != nil {
-		log.Fatalf("failed read file. filename: %s, err: %w", r.GetSource(), err)
+		return "", fmt.Errorf("failed read file. filename: %s, err: %w", r.GetSource(), err)
 	}
 	checksum, err := util.CalculateCheckSum(file)
 	if err != nil {
