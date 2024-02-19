@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/sanposhiho/gomockhandler/internal/util"
@@ -48,7 +49,8 @@ func Checksum(r Runner) (string, error) {
 }
 
 func replaceTmpPathWithOriginal(tmpFilePath string, tmpFile []byte) string {
-	originFilePath := strings.Replace(tmpFilePath, "tmp_", "", 1)
+	d, f := filepath.Split(tmpFilePath)
+	originFilePath := filepath.Join(d, strings.Replace(f, "tmp_", "", 1))
 	return strings.Replace(string(tmpFile), tmpFilePath, originFilePath, 1)
 }
 
