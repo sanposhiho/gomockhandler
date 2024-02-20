@@ -84,7 +84,7 @@ func (r Runner) Mockgen() {
 			}
 			file, err := ioutil.ReadFile(runner.GetDestination())
 			if err != nil {
-				return fmt.Errorf("failed read file. filename: %s, err: %w", r.MockgenRunner.GetDestination(), err)
+				return fmt.Errorf("failed read file. filename: %s, err: %w", runner.GetDestination(), err)
 			}
 			checksum, err := util.CalculateCheckSum(file)
 			if err != nil {
