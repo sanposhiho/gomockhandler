@@ -56,7 +56,7 @@ func (r Runner) GenerateConfig() {
 		}
 	}
 
-	if err := r.MockgenRunner.Run(); err != nil {
+	if err := r.MockgenRunner.Run(chunk.GetMockgenCmd()); err != nil {
 		log.Fatalf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, r.MockgenRunner)
 	}
 

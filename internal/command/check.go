@@ -92,7 +92,7 @@ func (r Runner) Check() {
 				}
 			}
 
-			checksum, err := mockgen.Checksum(runner)
+			checksum, err := mockgen.Checksum(runner, ch.GetMockgenCmd())
 			if err != nil {
 				return fmt.Errorf("get checksum: %v", err)
 			}

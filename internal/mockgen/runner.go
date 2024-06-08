@@ -11,7 +11,7 @@ import (
 )
 
 type Runner interface {
-	Run() error
+	Run(mockgenCmd []string) error
 
 	SetSource(new string)
 	GetSource() string
@@ -19,7 +19,7 @@ type Runner interface {
 	GetDestination() string
 }
 
-func Checksum(r Runner) (string, error) {
+func Checksum(r Runner, mockgenCmd []string) (string, error) {
 	d := r.GetDestination()
 	tmpFilePath := util.TmpFilePath(d)
 	defer os.Remove(tmpFilePath)
@@ -28,7 +28,7 @@ func Checksum(r Runner) (string, error) {
 	r.SetDestination(tmpFilePath)
 	defer r.SetDestination(d)
 
-	if err := r.Run(); err != nil {
+	if err := r.Run(mockgenCmd); err != nil {
 		return "", fmt.Errorf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, r)
 	}
 

@@ -1,10 +1,15 @@
 package model
 
-import "errors"
+import (
+	"errors"
+	"strings"
+)
 
 type Config struct {
 	// key: destination
 	Mocks map[string]*Mock `json:"mocks"`
+
+	MockgenCmd string `json:"mockgen_cmd,omitempty"`
 }
 
 func NewChunk() *Config {
@@ -28,4 +33,11 @@ func (c *Config) Find(destination string) (*Mock, error) {
 		return m, nil
 	}
 	return nil, ErrNotFound
+}
+
+func (c *Config) GetMockgenCmd() []string {
+	if c.MockgenCmd == "" {
+		return []string{"mockgen"}
+	}
+	return strings.Fields(c.MockgenCmd)
 }

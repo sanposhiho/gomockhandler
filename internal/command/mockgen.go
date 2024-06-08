@@ -78,7 +78,7 @@ func (r Runner) Mockgen() {
 				}
 			}
 
-			err = runner.Run()
+			err = runner.Run(ch.GetMockgenCmd())
 			if err != nil {
 				return fmt.Errorf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, runner)
 			}
