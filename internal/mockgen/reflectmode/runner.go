@@ -21,9 +21,10 @@ type Runner struct {
 	ProgOnly        *bool  `json:"prog_only,omitempty"`
 	WritePkgComment *bool  `json:"write_pkg_comment,omitempty"`
 	DebugParser     *bool  `json:"debug_parser,omitempty"`
+	Typed           *bool  `json:"typed,omitempty"`
 }
 
-func NewRunner(pn, ifs, source, dest, pkg, imp, af, bf, mn, spkg, cf, eo string, po, wpc, dp bool) *Runner {
+func NewRunner(pn, ifs, source, dest, pkg, imp, af, bf, mn, spkg, cf, eo string, po, wpc, dp, typed bool) *Runner {
 	var wpcp *bool
 	if wpc != true {
 		// The default value of wpc is true
@@ -42,6 +43,12 @@ func NewRunner(pn, ifs, source, dest, pkg, imp, af, bf, mn, spkg, cf, eo string,
 		pop = &po
 	}
 
+	var tp *bool
+	if typed != false {
+		// The default value of typed is false
+		tp = &typed
+	}
+
 	return &Runner{
 		PackageName:     pn,
 		Interfaces:      ifs,
@@ -58,6 +65,7 @@ func NewRunner(pn, ifs, source, dest, pkg, imp, af, bf, mn, spkg, cf, eo string,
 		ProgOnly:        pop,
 		WritePkgComment: wpcp,
 		DebugParser:     dpp,
+		Typed:           tp,
 	}
 }
 
@@ -127,6 +135,9 @@ func (r *Runner) options() []string {
 	}
 	if r.ProgOnly != nil {
 		opts = append(opts, "-prog_only="+strconv.FormatBool(*r.ProgOnly))
+	}
+	if r.Typed != nil {
+		opts = append(opts, "-typed="+strconv.FormatBool(*r.Typed))
 	}
 	return opts
 }

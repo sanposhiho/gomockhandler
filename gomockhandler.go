@@ -40,6 +40,7 @@ var (
 	buildFlags      = flag.String("build_flags", "", "[option for configure mockgen] (reflect mode) Additional flags for go build.")
 	progOnly        = flag.Bool("prog_only", false, "[option for configure mockgen] (reflect mode) Only generate the reflection program; write it to stdout and exit.")
 	debugParser     = flag.Bool("debug_parser", false, "[option for configure mockgen] Print out parser results only.")
+	typed           = flag.Bool("typed", false, "[option for configure mockgen] Generate Type-safe 'Return', 'Do', 'DoAndReturn' function.")
 )
 
 func main() {
@@ -106,11 +107,11 @@ func prepareMockgenRunner() mockgen.Runner {
 				log.Fatalf("Parse package name failed: %v", err)
 			}
 		}
-		return reflectmode.NewRunner(packageName, interfaces, *source, *destination, *packageOut, *imports, *auxFiles, *buildFlags, *mockNames, *selfPackage, *copyrightFile, *execOnly, *progOnly, *writePkgComment, *debugParser)
+		return reflectmode.NewRunner(packageName, interfaces, *source, *destination, *packageOut, *imports, *auxFiles, *buildFlags, *mockNames, *selfPackage, *copyrightFile, *execOnly, *progOnly, *writePkgComment, *debugParser, *typed)
 	}
 
 	// source mode
-	return sourcemode.NewRunner(*source, *destination, *packageOut, *imports, *auxFiles, *mockNames, *selfPackage, *copyrightFile, *writePkgComment, *debugParser)
+	return sourcemode.NewRunner(*source, *destination, *packageOut, *imports, *auxFiles, *mockNames, *selfPackage, *copyrightFile, *writePkgComment, *debugParser, *typed)
 }
 
 // Plundered from golang/mock/mockgen/parse.go.
