@@ -16,9 +16,10 @@ type Runner struct {
 	CopyrightFile   string `json:"copyright_file,omitempty"`
 	WritePkgComment *bool  `json:"write_pkg_comment,omitempty"`
 	DebugParser     *bool  `json:"debug_parser,omitempty"`
+	Typed           *bool  `json:"typed,omitempty"`
 }
 
-func NewRunner(source, dest, pkg, imp, af, mn, spkg, cf string, wpc, dp bool) *Runner {
+func NewRunner(source, dest, pkg, imp, af, mn, spkg, cf string, wpc, dp, typed bool) *Runner {
 	var wpcp *bool
 	if wpc != true {
 		// The default value of wpc is true
@@ -30,6 +31,13 @@ func NewRunner(source, dest, pkg, imp, af, mn, spkg, cf string, wpc, dp bool) *R
 		// The default value of dp is false
 		dpp = &dp
 	}
+
+	var tp *bool
+	if typed != false {
+		// The default value of typed is false
+		tp = &typed
+	}
+
 	return &Runner{
 		Source:          source,
 		Destination:     dest,
@@ -41,6 +49,7 @@ func NewRunner(source, dest, pkg, imp, af, mn, spkg, cf string, wpc, dp bool) *R
 		CopyrightFile:   cf,
 		WritePkgComment: wpcp,
 		DebugParser:     dpp,
+		Typed:           tp,
 	}
 }
 
@@ -99,6 +108,9 @@ func (r *Runner) options() []string {
 	}
 	if r.DebugParser != nil {
 		opts = append(opts, "-debug_parser="+strconv.FormatBool(*r.DebugParser))
+	}
+	if r.Typed != nil {
+		opts = append(opts, "-typed="+strconv.FormatBool(*r.Typed))
 	}
 
 	return opts
