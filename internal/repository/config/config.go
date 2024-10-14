@@ -1,7 +1,6 @@
 package config
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -17,16 +16,11 @@ func NewRepository() Repository {
 }
 
 func (r *Repository) Put(m *model.Config, path string) error {
-	d, err := json.Marshal(m)
+	d, err := json.MarshalIndent(m, "", "	")
 	if err != nil {
 		return fmt.Errorf("json marshal: %w", err)
 	}
-
-	var buf bytes.Buffer
-	if err := json.Indent(&buf, d, "", "	"); err != nil {
-		return fmt.Errorf("format json: %w", err)
-	}
-	return ioutil.WriteFile(path, buf.Bytes(), 0644)
+	return ioutil.WriteFile(path, d, 0644)
 }
 
 func (r *Repository) Get(path string) (*model.Config, error) {
