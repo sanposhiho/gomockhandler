@@ -4,7 +4,6 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -117,7 +116,7 @@ func prepareMockgenRunner() mockgen.Runner {
 // Plundered from golang/mock/mockgen/parse.go.
 // packageNameOfDir get package import path via dir
 func packageNameOfDir(srcDir string) (string, error) {
-	files, err := ioutil.ReadDir(srcDir)
+	files, err := os.ReadDir(srcDir)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -153,7 +152,7 @@ func parsePackageImport(srcDir string) (string, error) {
 	if moduleMode != "off" {
 		currentDir := srcDir
 		for {
-			dat, err := ioutil.ReadFile(filepath.Join(currentDir, "go.mod"))
+			dat, err := os.ReadFile(filepath.Join(currentDir, "go.mod"))
 			if os.IsNotExist(err) {
 				if currentDir == filepath.Dir(currentDir) {
 					// at the root

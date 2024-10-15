@@ -1,7 +1,6 @@
 package command
 
 import (
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -60,7 +59,7 @@ func (r Runner) GenerateConfig() {
 		log.Fatalf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, r.MockgenRunner)
 	}
 
-	file, err := ioutil.ReadFile(r.MockgenRunner.GetDestination())
+	file, err := os.ReadFile(r.MockgenRunner.GetDestination())
 	if err != nil {
 		log.Fatalf("failed read file. filename: %s, err: %w", r.MockgenRunner.GetDestination(), err)
 	}

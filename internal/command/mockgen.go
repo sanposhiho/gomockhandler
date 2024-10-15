@@ -3,7 +3,6 @@ package command
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -82,7 +81,7 @@ func (r Runner) Mockgen() {
 			if err != nil {
 				return fmt.Errorf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, runner)
 			}
-			file, err := ioutil.ReadFile(runner.GetDestination())
+			file, err := os.ReadFile(runner.GetDestination())
 			if err != nil {
 				return fmt.Errorf("failed read file. filename: %s, err: %w", runner.GetDestination(), err)
 			}
