@@ -3,7 +3,6 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/sanposhiho/gomockhandler/internal/model"
@@ -20,7 +19,7 @@ func (r *Repository) Put(m *model.Config, path string) error {
 	if err != nil {
 		return fmt.Errorf("json marshal: %w", err)
 	}
-	return ioutil.WriteFile(path, d, 0644)
+	return os.WriteFile(path, d, 0644)
 }
 
 func (r *Repository) Get(path string) (*model.Config, error) {
@@ -29,7 +28,7 @@ func (r *Repository) Get(path string) (*model.Config, error) {
 		return nil, err
 	}
 
-	raw, err := ioutil.ReadFile(path)
+	raw, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("read file: %w", err)
 	}

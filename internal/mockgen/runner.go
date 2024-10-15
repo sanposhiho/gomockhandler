@@ -2,7 +2,6 @@ package mockgen
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -32,7 +31,7 @@ func Checksum(r Runner) (string, error) {
 		return "", fmt.Errorf("failed to run mockgen: %v \nPlease run `%s` and check if mockgen works correctly with your options", err, r)
 	}
 
-	tmpFile, err := ioutil.ReadFile(tmpFilePath)
+	tmpFile, err := os.ReadFile(tmpFilePath)
 	if err != nil {
 		return "", fmt.Errorf("failed read file. filename: %s, err: %w", tmpFilePath, err)
 	}
@@ -55,7 +54,7 @@ func replaceTmpPathWithOriginal(tmpFilePath string, tmpFile []byte) string {
 }
 
 func SourceChecksum(r Runner) (string, error) {
-	file, err := ioutil.ReadFile(r.GetSource())
+	file, err := os.ReadFile(r.GetSource())
 	if err != nil {
 		return "", fmt.Errorf("failed read file. filename: %s, err: %w", r.GetSource(), err)
 	}
