@@ -19,7 +19,7 @@ func (r *Repository) Put(m *model.Config, path string) error {
 	if err != nil {
 		return fmt.Errorf("json marshal: %w", err)
 	}
-	return os.WriteFile(path, d, 0644)
+	return os.WriteFile(path, append(d, '\n'), 0644)
 }
 
 func (r *Repository) Get(path string) (*model.Config, error) {
