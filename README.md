@@ -60,7 +60,12 @@ These are the options for using the gomockhandler.
 -target_dir string
   Only mocks under the specified directory will be targeted for commands `check` and `mockgen`.
   By default, all files will be targeted.
-  
+
+-ignore string
+  Comma-separated glob patterns to ignore (e.g., 'testdata,*_generated.go,mock_*').
+  Supports glob wildcards: '*' (any characters), '?' (single character).
+  The 'vendor' directory is always ignored by default.
+
 -f bool
   If true, it will also generate mocks whose source has not been updated.
   The default value is false.
