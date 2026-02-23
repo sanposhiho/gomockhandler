@@ -21,9 +21,10 @@ import (
 )
 
 var (
-	configPath    = flag.String("config", "gomockhandler.json", "The path to config file.")
-	forceGenerate = flag.Bool("f", false, "If true, it will also generate mocks whose source has not been updated.")
-	pathFilter    = flag.String("target_dir", "", "By specifying a path, only mocks under that path will be targeted for commands `check` and `mockgen`")
+	configPath     = flag.String("config", "gomockhandler.json", "The path to config file.")
+	forceGenerate  = flag.Bool("f", false, "If true, it will also generate mocks whose source has not been updated.")
+	pathFilter     = flag.String("target_dir", "", "By specifying a path, only mocks under that path will be targeted for commands `check` and `mockgen`")
+	ignorePatterns = flag.String("ignore", "", "Comma-separated patterns to ignore (e.g., 'testdata,_test.go'). Patterns are matched against directory/file names.")
 
 	// flags for mockgen
 	source          = flag.String("source", "", "[option for configure mockgen] (source mode) Input Go source file; enables source mode.")
@@ -52,6 +53,7 @@ func main() {
 			ConfigPath:      *configPath,
 			ForceGenerate:   *forceGenerate,
 			PathFilter:      *pathFilter,
+			IgnorePatterns:  parseIgnorePatterns(*ignorePatterns),
 			Source:          *source,
 			Destination:     *destination,
 			MockNames:       *packageOut,
@@ -183,3 +185,18 @@ func parsePackageImport(srcDir string) (string, error) {
 }
 
 var errOutsideGoPath = errors.New("source directory is outside GOPATH")
+
+func parseIgnorePatterns(patterns string) []string {
+	if patterns == "" {
+		return nil
+	}
+	parts := strings.Split(patterns, ",")
+	result := make([]string, 0, len(parts))
+	for _, p := range parts {
+		p = strings.TrimSpace(p)
+		if p != "" {
+			result = append(result, p)
+		}
+	}
+	return result
+}

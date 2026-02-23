@@ -50,8 +50,8 @@ func (c *Checker) Search(key string) bool {
 	return ok
 }
 
-func (c *Checker) FindMocks(ctx context.Context) error {
-	trees, err := util.Tree(".")
+func (c *Checker) FindMocks(ctx context.Context, ignorePatterns []string) error {
+	trees, err := util.Tree(".", ignorePatterns)
 	if err != nil {
 		return fmt.Errorf("failed to create dir tree: %w", err)
 	}

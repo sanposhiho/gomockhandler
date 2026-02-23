@@ -18,9 +18,10 @@ type Runner struct {
 }
 
 type Args struct {
-	ConfigPath    string
-	ForceGenerate bool
-	PathFilter    string
+	ConfigPath     string
+	ForceGenerate  bool
+	PathFilter     string
+	IgnorePatterns []string
 
 	Source          string
 	Destination     string

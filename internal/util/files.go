@@ -7,10 +7,9 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
-func Tree(dir string) ([]string, error) {
+func Tree(dir string, ignorePatterns []string) ([]string, error) {
 	files, err := os.ReadDir(dir)
 	if err != nil {
 		return []string{}, fmt.Errorf("failed to get dir: %w", err)
@@ -18,13 +17,12 @@ func Tree(dir string) ([]string, error) {
 
 	var paths []string
 	for _, file := range files {
-		if strings.Contains(file.Name(), "vendor") {
-			// vendor dir should be ignored.
+		if shouldIgnore(file.Name(), ignorePatterns) {
 			continue
 		}
 
 		if file.IsDir() {
-			childPaths, err := Tree(filepath.Join(dir, file.Name()))
+			childPaths, err := Tree(filepath.Join(dir, file.Name()), ignorePatterns)
 			if err != nil {
 				return []string{}, err
 			}
@@ -35,6 +33,18 @@ func Tree(dir string) ([]string, error) {
 	}
 
 	return paths, nil
+}
+
+func shouldIgnore(name string, patterns []string) bool {
+	if name == "vendor" {
+		return true
+	}
+	for _, pattern := range patterns {
+		if matched, _ := filepath.Match(pattern, name); matched {
+			return true
+		}
+	}
+	return false
 }
 
 func ReadALine(filename string) (string, error) {
