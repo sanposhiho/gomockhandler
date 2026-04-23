@@ -1,0 +1,33 @@
+version: 2
+
+project_name: gomockhandler
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: gomockhandler
+    main: .
+    binary: gomockhandler
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+
+archives:
+  - id: gomockhandler
+    formats: ['tar.gz']
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: "{{ .ProjectName }}_{{ .Version }}_checksums.txt"
+
+changelog:
+  sort: asc
